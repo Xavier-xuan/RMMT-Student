@@ -1,0 +1,177 @@
+<template>
+
+    <div class="questionnaire">
+        <PageHeader title="问卷调查 | Questionnaire"></PageHeader>
+        <el-row type="flex">
+
+            <el-col :span="14" :offset="2">
+                <div class="default-container ">
+
+                    <v-form-render :form-json="formJson" :form-data="formData" ref="vFormRef">
+                    </v-form-render>
+
+                    <el-dialog title="权重设置" :visible.sync="showWeightPlane">
+                        <div class="tips">
+                            目前系统仅对能够量化评估的项目进行算法匹配，因此只能设置问卷中部分问题的权重，其他没有权重（或权重为0）的问题代表仅作个人资料展示，不作算法匹配的参考项目 <br/>
+                            请将你认为的不重要问题的权重调低，重要问题的权重调高 <br/>
+                            调整的范围应该在默认权重的 0~5 倍之间，千万不要超过10倍，否则这个问题极有可能被系统认为你评判室友的唯一标准
+                        </div>
+                        <el-table :data="questionWithWeight" stripe>
+                            <el-table-column
+                                prop="id"
+                                label="#ID">
+                            </el-table-column>
+                            <el-table-column
+                                prop="title"
+                                label="问题">
+                            </el-table-column>
+                            <el-table-column
+                                prop="weight"
+                                label="权重">
+
+                                <template slot-scope="scope">
+
+                                    <el-input-number
+                                        v-model.number="scope.row.weight" v-if="scope.row.weight >= 0" :min="0">
+                                    </el-input-number>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <br/>
+                        <el-button class="save-btn" type="primary" @click="save">Save</el-button>
+                    </el-dialog>
+                    <el-tooltip class="item" effect="dark" :disabled="canSave()"
+                                content="The questionnaire cannot be changed now"
+                                placement="right">
+                        <div style="display: inline-block">
+                            <el-button type="primary" :disabled="!canSave()" @click="preSave">Save</el-button>
+
+                        </div>
+                    </el-tooltip>
+                </div>
+            </el-col>
+        </el-row>
+
+
+    </div>
+</template>
+
+<script>
+export default {
+    name: "questionnaire",
+    data() {
+        return {
+            system_settings: this.$store.state.system_settings,
+            formJson: this.$store.state.system_settings.questionnaire_json,
+            formData: {},
+            questionWithWeight: [],
+            showWeightPlane: false,
+        }
+    },
+    methods: {
+        preSave() {
+            this.$refs.vFormRef.getFormData().then(formData => {
+                this.showWeightPlane = true
+            }).catch(error => {
+                this.$message.error(error)
+            })
+        },
+        save: _.throttle(async function () {
+            if (!this.canSave())
+                return
+
+            this.$refs.vFormRef.getFormData().then(formData => {
+                // 构造数据
+                let data_to_store = {}
+                _.forIn(formData, (value, key) => {
+                    data_to_store[key] = {
+                        weight: _.filter(this.questionWithWeight, {id: key})[0].weight,
+                        answer: JSON.stringify(value),
+                        item_id: key
+                    }
+                })
+                this.$axios.$post("/questionnaire/answer", data_to_store).then(data => {
+                    if (data.code === 200) {
+                        this.showWeightPlane = false
+                        this.$message.success("学生问卷数据已保存")
+                    }
+                }).catch(error => {
+                    this.showWeightPlane = false
+                    this.$message.error(error)
+                })
+            })
+        }, 2000),
+        canSave() {
+            let current = new Date()
+            if (new Date(this.system_settings.step_1_start_at) <= current && current <= new Date(this.system_settings.step_1_end_at))
+                return true
+            else
+                return false
+        }
+    },
+    async asyncData({params, $axios, $store}) {
+        function convert_data(str) {
+            try {
+                let obj = JSON.parse(str);
+                return obj
+            } catch (e) {
+                return str
+            }
+        }
+
+        let questionnaireItems = await $axios.$get('/questionnaire/list').then(data => {
+            return data.data
+        })
+
+        let questionnaireAnswers = await $axios.$get('/questionnaire/answer').then(data => {
+            return data.data
+        })
+
+        let questionWithWeight = []
+
+        questionnaireItems.forEach(element => {
+            let item_id = element.id
+            // 先找找用户有没有回答过这个问题 有就用他设置的权重 没有就用默认权重
+            let answer = _.filter(questionnaireAnswers, {item_id: item_id})
+            let weight
+            if (element.weight < 0) {
+                weight = element.weight
+            } else if (answer.length > 0)
+                weight = answer[0].weight
+            else
+                weight = element.weight
+
+            questionWithWeight.push({
+                id: item_id,
+                title: element.title,
+                weight: weight,
+            })
+        })
+
+        let formData = {}
+
+        questionnaireAnswers.forEach(element => {
+            formData[element.item_id] = convert_data(element.answer)
+        })
+        return {
+            formData,
+            questionWithWeight
+        }
+    },
+    async fetch({store}) {
+        if (store.state.system_settings.step_1_start_at === null)
+            await store.dispatch("refresh_system_settings")
+    }
+}
+</script>
+
+<style scoped>
+
+.tips {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    line-height: 2;
+    font-size: 14px;
+    color: rgba(0, 0, 0, .87);
+    margin-bottom: 10px;
+}
+</style>

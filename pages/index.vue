@@ -4,6 +4,9 @@
 
 <script>
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
+  beforeRouteEnter(to, from, next) {
+    next("/guide")
+  }
 }
 </script>
