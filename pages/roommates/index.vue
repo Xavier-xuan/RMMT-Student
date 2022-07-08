@@ -6,7 +6,7 @@
                 <div class="default-container">
                     <el-row v-for="group in student_groups_with_score" >
                         <el-col v-for=" student in group" :span="8" v-bind:key="student.id">
-                            <div class="profile-card-container">
+                            <div v-if="student.id != $auth.user.id" class="profile-card-container">
                                 <div @click="jump(student)" class="profile-card">
                                     <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
                                     <div class="text">
@@ -30,7 +30,7 @@
                 <div class="default-container">
                     <el-row v-for="group in student_groups_with_no_score">
                         <el-col v-for=" student in group" :span="8">
-                            <div class="profile-card-container">
+                            <div  v-if="student.id != $auth.user.id" class="profile-card-container">
                                 <div @click="jump(student)"  class="profile-card no-score">
                                     <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
                                     <div class="text">
