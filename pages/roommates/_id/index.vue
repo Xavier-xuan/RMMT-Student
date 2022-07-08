@@ -118,7 +118,8 @@ export default {
             team: null,
             has_answered_questionnaire: false,
             questionnaire_answers: null,
-            formData: null
+            formData: null,
+            score: null
         }
     },
     methods: {

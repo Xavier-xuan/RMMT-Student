@@ -41,6 +41,18 @@
             <el-main>
                 <Nuxt/>
             </el-main>
+
+            <el-footer>
+                <el-row>
+                    <el-col class="copyright" :span="6">
+                        Designed by Xuanyu Liu <br/>
+                        Made With <span style="color: #e27575;font-size: 14px;">❤</span>
+                    </el-col>
+                    <el-col class="logo" :span="6" :offset="12">
+                        <ZhixinLogo height="49.3px" width="98.25"></ZhixinLogo>
+                    </el-col>
+                </el-row>
+            </el-footer>
         </el-container>
 
         <el-dialog :visible.sync="show_change_password_panel" title="修改密码" width="600px">
@@ -82,8 +94,10 @@ Wechat: xxxxxxxx"
 </template>
 
 <script>
+import ZhixinLogo from "../components/ZhixinLogo";
 export default {
     name: "default",
+    components: {ZhixinLogo},
     data() {
         let confirm_password = (rule, value, callback) => {
             if (value === '') {
@@ -190,5 +204,19 @@ a {
 
 .el-header {
     background: #ffffff;
+}
+
+
+.el-main {
+    min-height: calc(100vh - 120px);
+}
+
+.el-footer{
+    background: #ffffff;
+}
+
+.copyright{
+    margin-top: 10px;
+    font-size: 1.0rem;
 }
 </style>

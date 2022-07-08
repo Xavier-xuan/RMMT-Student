@@ -1,6 +1,7 @@
 <template>
     <div class="login-box">
         <div class="login-card">
+            <ZhixinLogo></ZhixinLogo>
             <div class="logo">
                 RMDP Student
             </div>
@@ -106,6 +107,10 @@ export default {
     font-family: Consolas, fantasy;
     font-size: 2rem;
 
+}
+
+.zhixin-logo{
+    text-align: center;
 }
 
 </style>
