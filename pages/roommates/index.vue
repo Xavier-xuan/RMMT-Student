@@ -86,10 +86,10 @@ export default {
     },
     computed: {
         student_groups_with_no_score() {
-            _.remove(this.student_with_no_score, function (n) {
-                return n == this.$auth.user.id
+            let students = _.filter(this.student_with_no_score, function (n) {
+                return n.id !== this.$auth.user.id
             })
-            return _.chunk(this.student_with_no_score, 3)
+            return _.chunk(students, 3)
         }
     }
 
