@@ -15,7 +15,8 @@
                         <div class="team">组队状态：
                             <span class="green" v-if="team === null">
                                 未组队
-                                                        <el-button type="success" size="small"
+                                                        <el-button v-if="$auth.user.team == null" type="success"
+                                                                   size="small"
                                                                    @click="team_up">与他组队</el-button>
                             </span>
                             <span class="red" v-else-if="team.students.length == 4"> 已组队 队已满员 </span>
