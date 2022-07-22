@@ -59,7 +59,7 @@ export default {
     data() {
         return {
             student_groups_with_score: [],
-            student_with_no_score: []
+            student_groups_with_no_score: []
         }
     },
     methods: {
@@ -77,21 +77,16 @@ export default {
         let data = await $axios.$get("/team/recommend_teammates").then(data => {
             if (data.code === 200) {
                 let student_groups_with_score = _.chunk(data.data.students_with_score, 3)
-                let student_with_no_score = data.data.student_groups_with_no_score
-                return {student_groups_with_score, student_with_no_score}
+                let student_with_no_score = _.filter(data.data.students_with_no_score, function (n) {
+                    return $auth.user.id !== n.id
+                })
+                let student_groups_with_no_score = _.chunk(student_with_no_score, 3)
+                return {student_groups_with_score, student_groups_with_no_score}
             }
         })
 
         return data
     },
-    computed: {
-        student_groups_with_no_score() {
-            let students = _.filter(this.student_with_no_score, function (n) {
-                return n.id !== this.$auth.user.id
-            })
-            return _.chunk(students, 3)
-        }
-    }
 
 
 }
