@@ -4,8 +4,8 @@
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <div class="default-container">
-                    <el-row v-for="group in student_groups_with_score" >
-                        <el-col v-for=" student in group" :span="8"  v-bind:key="student.id">
+                    <el-row v-for="group in student_groups_with_score">
+                        <el-col v-for=" student in group" :span="8" v-bind:key="student.id">
                             <div class="profile-card-container">
                                 <div @click="jump(student)" class="profile-card">
                                     <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
@@ -30,8 +30,8 @@
                 <div class="default-container">
                     <el-row v-for="group in student_groups_with_no_score">
                         <el-col v-for=" student in group" :span="8">
-                            <div  v-if="student.id != $auth.user.id" class="profile-card-container">
-                                <div @click="jump(student)"  class="profile-card no-score">
+                            <div v-if="student.id != $auth.user.id" class="profile-card-container">
+                                <div @click="jump(student)" class="profile-card no-score">
                                     <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
                                     <div class="text">
                                         <div class="name">姓名： {{ student.name }}</div>
@@ -59,7 +59,7 @@ export default {
     data() {
         return {
             student_groups_with_score: [],
-            student_groups_with_no_score: []
+            student_with_no_score: []
         }
     },
     methods: {
@@ -77,14 +77,21 @@ export default {
         let data = await $axios.$get("/team/recommend_teammates").then(data => {
             if (data.code === 200) {
                 let student_groups_with_score = _.chunk(data.data.students_with_score, 3)
-                let student_groups_with_no_score = _.remove(data.data.student_groups_with_no_score, {id: $auth.user.id})
-                student_groups_with_no_score = _.chunk(data.data.students_with_no_score, 3)
-                return {student_groups_with_score, student_groups_with_no_score}
+                let student_with_no_score = data.data.student_groups_with_no_score
+                return {student_groups_with_score, student_with_no_score}
             }
         })
 
         return data
     },
+    computed: {
+        student_groups_with_no_score() {
+            _.remove(this.student_with_no_score, function (n) {
+                return n == this.$auth.user.id
+            })
+            return _.chunk(this.student_with_no_score, 3)
+        }
+    }
 
 
 }
