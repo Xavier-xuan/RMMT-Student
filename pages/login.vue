@@ -3,7 +3,7 @@
         <div class="login-card">
             <ZhixinLogo></ZhixinLogo>
             <div class="logo">
-                RMDP Student
+                RMMT Student
             </div>
             <div class="login-form">
                 <el-form ref="login_form" :model="login_form" :rules="rules">
