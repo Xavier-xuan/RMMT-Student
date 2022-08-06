@@ -12,10 +12,10 @@
                                     <div class="text">
                                         <div class="name">姓名： {{ student.name }}</div>
                                         <div class="score">奇异指数： {{ student.score }}</div>
-<!--                                        <div class="contact">联系方式：
+                                        <div class="contact">联系方式：
                                             <br/>
                                             {{ student.contact }}
-                                        </div>-->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
