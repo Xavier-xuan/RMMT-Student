@@ -35,7 +35,9 @@ export default {
         '@/plugins/element-ui',
         '@/plugins/lodash',
         '@/plugins/axios',
-        '@/plugins/vform'
+        '@/plugins/vform',
+        '@/plugins/gtag',
+
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
@@ -81,8 +83,5 @@ export default {
     },
     axios: {
         baseURL: "http://127.0.0.1:5000/api/student"
-    },
-    googleAnalytics: {
-        id: 'G-6J5K0DCT73'
     }
 }
