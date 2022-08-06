@@ -81,5 +81,8 @@ export default {
     },
     axios: {
         baseURL: "http://127.0.0.1:5000/api/student"
+    },
+    googleAnalytics: {
+        id: 'G-6J5K0DCT73'
     }
 }
