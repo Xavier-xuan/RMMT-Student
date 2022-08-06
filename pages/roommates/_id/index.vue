@@ -53,18 +53,25 @@
                                 v-bind:key="student.id">
                             <div class="profile-card-container">
                                 <div @click="jump(student)" class="profile-card">
-                                    <el-avatar class="avatar" :src="avatar(student.id)"></el-avatar>
-                                    <div class="text">
-                                        <div class="name">姓名： {{ student.name }}</div>
-                                        <div class="score">奇异指数：
-                                            <span v-if="student.score!== null">{{ student.score }}</span>
-                                            <span v-else style="color: #F56C6C">未计算</span>
-                                        </div>
-                                        <div class="contact">联系方式：
-                                            <br/>
-                                            {{ student.contact }}
-                                        </div>
-                                    </div>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-avatar class="avatar" :src="avatar(student.id)"></el-avatar>
+
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <div class="text">
+                                                <div class="name">姓名： {{ student.name }}</div>
+                                                <div class="score">奇异指数：
+                                                    <span v-if="student.score!== null">{{ student.score }}</span>
+                                                    <span v-else style="color: #F56C6C">未计算</span>
+                                                </div>
+                                                <div class="contact">联系方式：
+                                                    <br/>
+                                                    {{ student.contact }}
+                                                </div>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
                                 </div>
                             </div>
                         </el-col>
