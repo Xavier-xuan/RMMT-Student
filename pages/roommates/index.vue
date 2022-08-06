@@ -8,15 +8,21 @@
                         <el-col v-for=" student in group" :span="8" v-bind:key="student.id">
                             <div class="profile-card-container">
                                 <div @click="jump(student)" class="profile-card">
-                                    <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
-                                    <div class="text">
-                                        <div class="name">姓名： {{ student.name }}</div>
-                                        <div class="score">奇异指数： {{ student.score }}</div>
-                                        <div class="contact">联系方式：
-                                            <br/>
-                                            {{ student.contact }}
-                                        </div>
-                                    </div>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <div class="text">
+                                                <div class="name">姓名： {{ student.name }}</div>
+                                                <div class="score">奇异指数： {{ student.score }}</div>
+                                                <div class="contact">联系方式：
+                                                    <br/>
+                                                    {{ student.contact }}
+                                                </div>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
                                 </div>
                             </div>
                         </el-col>
@@ -32,14 +38,20 @@
                         <el-col v-for=" student in group" :span="8">
                             <div v-if="student.id != $auth.user.id" class="profile-card-container">
                                 <div @click="jump(student)" class="profile-card no-score">
-                                    <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
-                                    <div class="text">
-                                        <div class="name">姓名： {{ student.name }}</div>
-                                        <div class="contact">联系方式：
-                                            <br/>
-                                            {{ student.contact }}
-                                        </div>
-                                    </div>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <div class="text">
+                                                <div class="name">姓名： {{ student.name }}</div>
+                                                <div class="contact">联系方式：
+                                                    <br/>
+                                                    {{ student.contact }}
+                                                </div>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
                                 </div>
                             </div>
                         </el-col>
@@ -100,8 +112,7 @@ export default {
     .profile-card {
         border: #e6e6e6 solid 1px;
         border-radius: 2px;
-        height: 150px;
-        position: relative;
+        min-height: 150px;
         cursor: pointer;
 
 
@@ -114,9 +125,8 @@ export default {
 
         .text {
             display: inline-block;
-            position: absolute;
-            top: 30px;
             line-height: 1.5;
+            overflow: hidden;
         }
     }
 
