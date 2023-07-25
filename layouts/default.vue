@@ -4,7 +4,7 @@
         <el-container>
             <el-header>
 
-                <el-row class="header" align="middle" type="flex">
+                <el-row class="header" text-align="middle" type="flex">
                     <el-col class="site-name" :span="6">
                         <a href="/">Roommate Matcher</a>
                     </el-col>
@@ -26,7 +26,7 @@
 
                             <el-submenu index="account">
                                 <template slot="title">Hello，{{ this.$auth.user.name }}</template>
-                                <el-menu-item @click="show_update_contact_panel = true">更新联系方式 Update Contact Info
+                                <el-menu-item @click="show_update_contact_panel = true">更新个人信息 Update Personal Info
                                 </el-menu-item>
                                 <el-menu-item @click="show_change_password_panel = true">修改密码 Change Password
                                 </el-menu-item>
@@ -74,13 +74,39 @@
             </div>
         </el-dialog>
 
-        <el-dialog title="更新联系方式 | Update Contact Information" :visible.sync="show_update_contact_panel">
+        <el-dialog title="更新个人信息| Update Personal Information" :visible.sync="show_update_contact_panel">
             <el-input
                 type="textarea"
-                :autosize="{ minRows: 2, maxRows: 4}"
-                placeholder="你想让别人通过什么方式联系上你？
-QQ: xxxxxxxx
-Wechat: xxxxxxxx"
+                :autosize = "{minRows: 1, maxRows: 1}"
+                placeholder="QQ"
+                v-model="QQ">
+            </el-input>
+            <br>
+            <el-input
+                type="textarea"
+                :autosize = "{minRows: 1, maxRows: 1}"
+                placeholder="Wechat"
+                v-model="Wechat">
+            </el-input>
+            <br>
+            <el-input
+                type="textarea"
+                :autosize = "{minRows: 1, maxRows: 1}"
+                placeholder="电话号码"
+                v-model="Phone">
+            </el-input>
+            <br>
+            <el-input
+                type="textarea"
+                :autosize = "{minRows: 1, maxRows: 1}"
+                placeholder="MBTI（可以到www.16personalities.com上自行测试）"
+                v-model="mbti">
+            </el-input>
+            <br>
+            <el-input
+                type="textarea"
+                :autosize = "{minRows: 1, maxRows: 2}"
+                placeholder="用三个2~4个字的词语描述一下自己吧(请用英文“;”来分割关键词)"
                 v-model="contact">
             </el-input>
             <div slot="footer" class="dialog-footer">
@@ -140,7 +166,11 @@ export default {
                 ],
             },
             show_update_contact_panel: this.$auth.user.contact == null,
-            contact: _.cloneDeep(this.$auth.user.contact)
+            contact: _.cloneDeep(this.$auth.user.contact),
+            QQ: _.cloneDeep(this.$auth.user.QQ),
+            Wechat: _.cloneDeep(this.$auth.user.Wechat),
+            Phone: _.cloneDeep(this.$auth.user.Phone),
+            mbti: _.cloneDeep(this.$auth.user.mbti)
         }
     },
     methods: {
@@ -164,7 +194,11 @@ export default {
         },
         do_update_contact() {
             this.$axios.$post("/update_contact", {
-                contact: this.contact
+                contact: this.contact,
+                QQ:this.QQ,
+                Wechat:this.Wechat,
+                Phone:this.Phone,
+                mbti:this.mbti
             }).then(data => {
                 if (data.code === 200) {
                     this.$message.success("你的联系方式已更新")
