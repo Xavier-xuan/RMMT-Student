@@ -9,7 +9,6 @@
             <el-col :span="20">
                 <div class="default-container detail">
                     <el-avatar class="avatar" shape="square" :src="avatar(id)"></el-avatar>
-
                     <div class="basic-info">
                         <div class="name">姓名： {{ name }}</div>
                         <div class="team">组队状态：
@@ -26,11 +25,14 @@
                             <span v-if="score!= null">{{ score }}</span>
                             <span v-else style="color: #F56C6C">未计算</span>
                         </div>
-                        <div class="contact">联系方式：
-                            <br/>
-                            {{ contact }}
+                        <div class="score">性格特点：
+                        <span v-for="(trait, traitIndex) in getTraits(contact)" :key= "traitIndex" class="label" style="flex">{{trait}}</span>
                         </div>
-
+                        <div class="contact">
+                            <div><strong>QQ: </strong>{{ QQ }}</div>
+                            <div><strong>Wechat: </strong>{{ Wechat }}</div>
+                            <div><strong>Phone: </strong>{{ Phone }}</div>
+                        </div>
                         <div v-if="team == null">
                         </div>
                     </div>
@@ -65,9 +67,16 @@
                                                     <span v-if="student.score!== null">{{ student.score }}</span>
                                                     <span v-else style="color: #F56C6C">未计算</span>
                                                 </div>
-                                                <div class="contact">联系方式：
+                                                <div class="score">性格特点：
                                                     <br/>
-                                                    {{ student.contact }}
+                                                    <div style="flex">
+                                                        <span v-for="(trait, traitIndex) in getTraits(student.contact)" :key= "traitIndex" class="label">{{trait}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="contact">
+                                                    <div><strong>QQ: </strong>{{ student.QQ }}</div>
+                                                    <div><strong>Wechat: </strong>{{student.Wechat }}</div>
+                                                    <div><strong>Phone: </strong>{{ student.Phone }}</div>
                                                 </div>
                                             </div>
                                         </el-col>
@@ -122,6 +131,9 @@ export default {
             id: null,
             name: null,
             contact: null,
+            QQ: null,
+            Wechat: null,
+            Phone: null,
             team_id: null,
             team: null,
             has_answered_questionnaire: false,
@@ -171,6 +183,13 @@ export default {
                 })
 
             })
+        },
+        getTraits(contact){
+            if(contact !== null && contact.length < 15){
+                return contact.split(';').map(trait => trait.trim());
+            }else{
+                return null;
+            }
         }
     },
     computed: {
@@ -183,6 +202,7 @@ export default {
             if (data.code === 200)
                 return data.data
         })
+
         if (data.team !== null) {
             let students_with_score = await $axios.$get("/team/recommend_teammates").then(data => {
                 return data.data.students_with_score;
@@ -234,8 +254,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 .orange {
     color: #E6A23C;
 }
@@ -248,5 +266,20 @@ export default {
     color: #F56C6C;
 }
 
+.label{
+    display: inline-block;
+    background-color: #ffae00d7;
+    color: #fff;
+    font-size: 8px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    vertical-align: middle;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 2px;
+}
+.contact{
+    font-size: 14px;
+    color: #999;
+}
 
 </style>
