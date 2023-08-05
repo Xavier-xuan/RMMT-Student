@@ -79,40 +79,19 @@
         <el-dialog title="更新个人信息| Update Personal Information" :visible.sync="show_update_contact_panel">
             <el-form>
                 <el-form-item>
-                    <el-input
-                        :autosize = "{minRows: 1, maxRows: 1}"
-                        placeholder="QQ"
-                        v-model="QQ">
-                    </el-input>
+                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="QQ" v-model="QQ"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input
-                        :autosize = "{minRows: 1, maxRows: 1}"
-                        placeholder="Wechat"
-                        v-model="Wechat">
-                    </el-input>
+                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="Wechat" v-model="Wechat"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input
-                        :autosize = "{minRows: 1, maxRows: 1}"
-                        placeholder="电话号码"
-                        v-model="Phone">
-                    </el-input>
+                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="电话号码" v-model="Phone"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input
-                        :autosize = "{minRows: 1, maxRows: 1}"
-                        placeholder="MBTI（可以到www.16personalities.com上自行测试）"
-                        v-model="mbti">
-                    </el-input>
+                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="MBTI（可以到www.16personalities.com上自行测试）" v-model="mbti"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input
-                        type="textarea"
-                        :autosize = "{minRows: 1, maxRows: 2}"
-                        placeholder="用三个2~4个字的词语描述一下自己吧(请用英文“;”来分割关键词)"
-                        v-model="contact">
-                    </el-input>
+                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 2}" placeholder="用三个2~4个字的词语描述一下自己吧(请用英文“;”来分割关键词)" v-model="contact"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">

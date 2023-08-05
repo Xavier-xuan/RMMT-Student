@@ -46,18 +46,27 @@
                                 v-bind:key="student.id">
                             <div class="profile-card-container">
                                 <div @click="jump(student)" class="profile-card">
-                                    <el-avatar class="avatar" :src="avatar(student.id)"></el-avatar>
-                                    <div class="text">
-                                        <div class="name">姓名： {{ student.name }}</div>
-                                        <div class="score">奇异指数：
-                                            <span v-if="student.score!== null">{{ student.score }}</span>
-                                            <span v-else style="color: #F56C6C">未计算</span>
-                                        </div>
-                                        <div class="contact">联系方式：
-                                            <br/>
-                                            {{ student.contact }}
-                                        </div>
-                                    </div>
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <el-avatar class="avatar" :src="avatar(student.id)"></el-avatar>
+
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <div class="text">
+                                                <div class="name">姓名： {{ student.name }}</div>
+                                                <div class="score">奇异指数：
+                                                    <span v-if="student.score!== null">{{ student.score }}</span>
+                                                    <span v-else style="color: #F56C6C">未计算</span>
+                                                </div>
+                                                <div class="score">性格特点：
+                                                    <br/>
+                                                    <div style="flex">
+                                                        <span v-for="(trait, traitIndex) in getTraits(student.contact)" :key= "traitIndex" class="label">{{trait}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
                                 </div>
                             </div>
                         </el-col>
@@ -251,6 +260,14 @@ export default {
                 })
             })
         },
+        getTraits(contact){
+            if(contact !== null && contact.length < 15){
+                return contact.split(';').map(trait => trait.trim());
+            }else{
+                return null;
+            }
+            
+        }
     },
 }
 </script>
@@ -259,4 +276,20 @@ export default {
 .detail {
     line-height: 2.3;
 }
+.contact{
+    font-size: 10px;
+    color: #999;
+}
+.label{
+    display: inline-block;
+    background-color: #ffae00d7;
+    color: #fff;
+    font-size: 8px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    vertical-align: middle;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 2px;
+}
+
 </style>

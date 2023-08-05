@@ -83,9 +83,6 @@ export default {
         middleware: ['auth']
     },
     axios: {
-        baseURL: "http://127.0.0.1:5000/api/student"
-    },
-    markdownit: {
-        runtime: true // Support `$md()`
+        baseURL: "https://xyc-api.seth24.com/api/student"
     }
 }
