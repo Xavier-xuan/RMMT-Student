@@ -100,7 +100,7 @@
                     </el-row>
                     <el-row>
                         <el-col :span="16">
-                            <v-form-render disabled="true" :form-json="formJson" :form-data="formData" ref="vFormRef">
+                            <v-form-render v-on:formChange="preventChange" v-on:keyboard="preventChange" v-on:click="preventChange" :form-json="formJson" :form-data="formData" ref="vFormRef">
                             </v-form-render>
                         </el-col>
                     </el-row>
@@ -127,7 +127,9 @@ export default {
             has_answered_questionnaire: false,
             questionnaire_answers: null,
             formData: null,
-            score: null
+            formDataCopy: null,
+            score: null,
+            inPrevent: false
         }
     },
     methods: {
@@ -171,6 +173,16 @@ export default {
                 })
 
             })
+        },
+        preventChange(fieldName, newValue, oldValue, formModel, subFormName, subFormRowIndex) {
+            // avoid circular triggering
+            if (!this.inPrevent) {
+                this.$message.warning("这是别人的问卷，你只能查看不能修改哦~")
+                this.inPrevent = true
+                this.$refs.vFormRef.setFormData(this.formDataCopy)
+                this.inPrevent = false
+            }
+            
         }
     },
     computed: {
@@ -214,6 +226,7 @@ export default {
             })
 
             data.formData = formData
+            data.formDataCopy = _.cloneDeep(formData)
         }
 
         return data
@@ -225,7 +238,7 @@ export default {
     created() {
         if (this.has_answered_questionnaire) {
             this.$nextTick(() => {
-                this.$refs.vFormRef.disableForm()
+                // this.$refs.vFormRef.disableForm()
             })
         }
 
