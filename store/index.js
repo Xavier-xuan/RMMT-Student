@@ -7,7 +7,8 @@ export const state = () => ({
         "step_3_start_at": null,
         "step_3_end_at": null,
         "team_max_student_count": null,
-        "questionnaire_json": {}
+        "questionnaire_json": {},
+        "tips": null,
     }
 })
 
