@@ -4,25 +4,27 @@
         <el-container>
             <el-header>
 
-                <el-row class="header" text-align="middle" type="flex">
-                    <el-col class="site-name" :span="6">
+                <el-row class="header" text-align="middle"  justify="space-between" type="flex" >
+                    <el-col class="site-name" :span="8">
                         <a href="/">Roommate Matcher</a>
                     </el-col>
+                    <el-col class="site-name" :span="4" >
+                    </el-col>
 
-                    <el-col class="menu" :span="18" :offset="4" style="overflow: hidden">
+                    <el-col class="menu" :lg="10" :md="12" style="overflow: hidden;text-align: right;">
                         <el-menu ref="navigation_bar" mode="horizontal" :default-active="navUrl"
                                  :router="true">
-                            <el-menu-item index="/guide">向导 Guide</el-menu-item>
+                            <el-menu-item index="/guide">向导</el-menu-item>
 
-                            <el-menu-item index="/questionnaire">问卷 Questionnaire</el-menu-item>
+                            <el-menu-item index="/questionnaire">问卷</el-menu-item>
 
-                            <el-menu-item index="/roommates">舍友大厅 Matching Hall</el-menu-item>
+                            <el-menu-item index="/roommates">舍友大厅</el-menu-item>
 
 
-                            <el-menu-item v-if="$auth.user.team == null" index="/team/requests"> 组队请求 | Team Requests
+                            <el-menu-item v-if="$auth.user.team == null" index="/team/requests"> 组队请求
                             </el-menu-item>
 
-                            <el-menu-item v-else index="/team/my"> 我的组队 | My Team</el-menu-item>
+                            <el-menu-item v-else index="/team/my"> 我的组队</el-menu-item>
 
                             <el-submenu index="account">
                                 <template slot="title">Hello，{{ this.$auth.user.name }}</template>
@@ -75,40 +77,44 @@
         </el-dialog>
 
         <el-dialog title="更新个人信息| Update Personal Information" :visible.sync="show_update_contact_panel">
-            <el-input
-                type="textarea"
-                :autosize = "{minRows: 1, maxRows: 1}"
-                placeholder="QQ"
-                v-model="QQ">
-            </el-input>
-            <br>
-            <el-input
-                type="textarea"
-                :autosize = "{minRows: 1, maxRows: 1}"
-                placeholder="Wechat"
-                v-model="Wechat">
-            </el-input>
-            <br>
-            <el-input
-                type="textarea"
-                :autosize = "{minRows: 1, maxRows: 1}"
-                placeholder="电话号码"
-                v-model="Phone">
-            </el-input>
-            <br>
-            <el-input
-                type="textarea"
-                :autosize = "{minRows: 1, maxRows: 1}"
-                placeholder="MBTI（可以到www.16personalities.com上自行测试）"
-                v-model="mbti">
-            </el-input>
-            <br>
-            <el-input
-                type="textarea"
-                :autosize = "{minRows: 1, maxRows: 2}"
-                placeholder="用三个2~4个字的词语描述一下自己吧(请用英文“;”来分割关键词)"
-                v-model="contact">
-            </el-input>
+            <el-form>
+                <el-form-item>
+                    <el-input
+                        :autosize = "{minRows: 1, maxRows: 1}"
+                        placeholder="QQ"
+                        v-model="QQ">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input
+                        :autosize = "{minRows: 1, maxRows: 1}"
+                        placeholder="Wechat"
+                        v-model="Wechat">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input
+                        :autosize = "{minRows: 1, maxRows: 1}"
+                        placeholder="电话号码"
+                        v-model="Phone">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input
+                        :autosize = "{minRows: 1, maxRows: 1}"
+                        placeholder="MBTI（可以到www.16personalities.com上自行测试）"
+                        v-model="mbti">
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input
+                        type="textarea"
+                        :autosize = "{minRows: 1, maxRows: 2}"
+                        placeholder="用三个2~4个字的词语描述一下自己吧(请用英文“;”来分割关键词)"
+                        v-model="contact">
+                    </el-input>
+                </el-form-item>
+            </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="show_update_contact_panel = false">取 消</el-button>
                 <el-button type="primary" @click="do_update_contact">确 定</el-button>
@@ -162,7 +168,7 @@ export default {
 
                 }],
                 confirm_password: [
-                    {validator: confirm_password, trigger: 'blur'}
+                    {validator: confirm_password, trigger: 'blur', required: true}
                 ],
             },
             show_update_contact_panel: this.$auth.user.contact == null,
@@ -227,6 +233,7 @@ export default {
 
 .site-name {
     text-align: center;
+    margin-top: 0.5rem;
 }
 
 a {

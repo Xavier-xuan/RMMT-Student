@@ -49,7 +49,8 @@ export default {
     // Modules: https://go.nuxtjs.dev/config-modules
     modules: [
         '@nuxtjs/axios',
-        '@nuxtjs/auth-next'
+        '@nuxtjs/auth-next',
+        '@nuxtjs/markdownit'
     ],
     auth: {
         strategies: {
@@ -83,5 +84,8 @@ export default {
     },
     axios: {
         baseURL: "http://127.0.0.1:5000/api/student"
+    },
+    markdownit: {
+        runtime: true // Support `$md()`
     }
 }
