@@ -44,7 +44,9 @@ export default {
     components: true,
 
     // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-    buildModules: [],
+    buildModules: [
+        '@nuxtjs/google-analytics'
+    ],
 
     // Modules: https://go.nuxtjs.dev/config-modules
     modules: [
@@ -83,6 +85,6 @@ export default {
         middleware: ['auth']
     },
     axios: {
-        baseURL: "https://xyc-api.seth24.com/api/student"
+        baseURL: "http://localhost:5000/api/student"
     }
 }

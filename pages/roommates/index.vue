@@ -18,16 +18,16 @@
                                                     <label v-if="student.mbti==='INTJ'||student.mbti==='INTP'||student.mbti==='ENTP'||student.mbti==='ENTJ'" class= "mbti-label-NT">{{student.mbti}}</label>
                                                     <label v-if="student.mbti==='INFJ'||student.mbti==='INFP'||student.mbti==='ENFP'||student.mbti==='ENFJ'" class= "mbti-label-NF">{{student.mbti}}</label>
                                                     <label v-if="student.mbti==='ISTJ'||student.mbti==='ISFJ'||student.mbti==='ESTJ'||student.mbti==='ESFJ'" class= "mbti-label-SJ">{{student.mbti}}</label>
-                                                    <label v-if="student.mbti==='ISTP'||student.mbti==='ISFP'||student.mbti==='ESTP'||student.mbti==='ESFP'" class= "mbti-label-SP">{{student.mbti}}</label>    
+                                                    <label v-if="student.mbti==='ISTP'||student.mbti==='ISFP'||student.mbti==='ESTP'||student.mbti==='ESFP'" class= "mbti-label-SP">{{student.mbti}}</label>
                                                 </div>
-                                                <span class="score">奇异指数： <strong>{{ student.score }}</strong></span>
+                                                <span class="score">匹配指数： <strong>{{ student.score | numRounding }}</strong></span>
                                                 <div style="flex">
                                                     <span v-for="(trait, traitIndex) in getTraits(student.contact)" :key= "traitIndex" class="label">{{trait}}</span>
                                                 </div>
                                                 <div class="contact">
                                                     <div><strong>QQ: </strong>{{ student.QQ }}</div>
                                                     <div><strong>Wechat: </strong>{{student.Wechat }}</div>
-                                                    <div><strong>Phone: </strong>{{ student.Phone }}</div>
+<!--                                                    <div><strong>Phone: </strong>{{ student.Phone }}</div>-->
                                                 </div>
                                             </div>
                                         </el-col>
@@ -57,7 +57,7 @@
                                                     <label v-if="student.mbti==='INTJ'||student.mbti==='INTP'||student.mbti==='ENTP'||student.mbti==='ENTJ'" class= "mbti-label-NT">{{student.mbti}}</label>
                                                     <label v-if="student.mbti==='INFJ'||student.mbti==='INFP'||student.mbti==='ENFP'||student.mbti==='ENFJ'" class= "mbti-label-NF">{{student.mbti}}</label>
                                                     <label v-if="student.mbti==='ISTJ'||student.mbti==='ISFJ'||student.mbti==='ESTJ'||student.mbti==='ESFJ'" class= "mbti-label-SJ">{{student.mbti}}</label>
-                                                    <label v-if="student.mbti==='ISTP'||student.mbti==='ISFP'||student.mbti==='ESTP'||student.mbti==='ESFP'" class= "mbti-label-SP">{{student.mbti}}</label>    
+                                                    <label v-if="student.mbti==='ISTP'||student.mbti==='ISFP'||student.mbti==='ESTP'||student.mbti==='ESFP'" class= "mbti-label-SP">{{student.mbti}}</label>
                                                 </div>
                                                 <div style="flex">
                                                     <span v-for="(trait, traitIndex) in getTraits(student.contact)" :key= "traitIndex" class="label">{{trait}}</span>
@@ -104,11 +104,11 @@ export default {
         },
         getTraits(contact){
             if(contact !== null && contact.length < 15){
-                return contact.split(';').map(trait => trait.trim());
+                return contact.split(/[,，;；]/).map(trait => trait.trim());
             }else{
                 return null;
             }
-            
+
         }
     },
     async asyncData({$axios, $auth}) {
@@ -125,8 +125,14 @@ export default {
 
         return data
     },
-
-
+    filters: {
+        numRounding(num) {
+            num = parseFloat(num)
+            if (!isNaN(num)) {
+                return ((num + '').indexOf('.') == -1) ? num : num.toFixed(2);
+            }
+        }
+    },
 }
 </script>
 
@@ -174,8 +180,8 @@ export default {
                 display: inline-block;
                 background-color: #9b5cff;
                 color: #ffffff;
-                font-size: 10px;
-                padding: 3px 5px;
+                font-size: 12px;
+                padding: 3px 3px;
                 border-radius: 10px;
                 vertical-align: middle;
                 font-family: 'Courier New', Courier, monospace;
@@ -185,8 +191,8 @@ export default {
                 display: inline-block;
                 background-color: #00642a;
                 color: #fff;
-                font-size: 10px;
-                padding: 3px 5px;
+                font-size: 12px;
+                padding: 3px 3px;
                 border-radius: 10px;
                 vertical-align: middle;
                 font-family: 'Courier New', Courier, monospace;
@@ -196,8 +202,8 @@ export default {
                 display: inline-block;
                 background-color: #007bff;
                 color: #fff;
-                font-size: 10px;
-                padding: 3px 5px;
+                font-size: 12px;
+                padding: 3px 3px;
                 border-radius: 10px;
                 vertical-align: middle;
                 font-family: 'Courier New', Courier, monospace;
@@ -207,8 +213,8 @@ export default {
                 display: inline-block;
                 background-color: #a69d83;
                 color: #fff;
-                font-size: 10px;
-                padding: 3px 5px;
+                font-size: 12px;
+                padding: 3px 3px;
                 border-radius: 10px;
                 vertical-align: middle;
                 font-family: 'Courier New', Courier, monospace;

@@ -17,13 +17,18 @@
                             调整的范围应该在默认权重的 0~5 倍之间，千万不要超过10倍，否则这个问题极有可能被系统认为你评判室友的唯一标准
                         </div>
                         <el-table :data="questionWithWeight" stripe>
-                            <el-table-column
-                                prop="id"
-                                label="#ID">
-                            </el-table-column>
+<!--                            <el-table-column-->
+<!--                                prop="id"-->
+<!--                                label="#ID">-->
+<!--                            </el-table-column>-->
                             <el-table-column
                                 prop="title"
                                 label="问题">
+                            </el-table-column>
+                            <el-table-column
+                                prop="default_weight"
+                                :formatter="defaultWeightFormatter"
+                                label="参考权重">
                             </el-table-column>
                             <el-table-column
                                 prop="weight"
@@ -32,7 +37,7 @@
                                 <template slot-scope="scope">
 
                                     <el-input-number
-                                        v-model.number="scope.row.weight" :span="2" v-if="scope.row.weight >= 0" :min="0">
+                                        v-model.number="scope.row.weight" :span="2" v-if="scope.row.default_weight >= 0" :min="0">
                                     </el-input-number>
                                 </template>
                             </el-table-column>
@@ -107,6 +112,15 @@ export default {
                 return true
             else
                 return false
+        },
+        defaultWeightFormatter(row, column) {
+            let num = parseFloat(row[column.property])
+            if (num < 0){
+                return "";
+            }
+            if (!isNaN(num)) {
+                return ((num + '').indexOf('.') == -1) ? num : num.toFixed(2);
+            }
         }
     },
     async asyncData({params, $axios, $store}) {
@@ -145,6 +159,7 @@ export default {
                 id: item_id,
                 title: element.title,
                 weight: weight,
+                default_weight: element.weight,
             })
         })
 
