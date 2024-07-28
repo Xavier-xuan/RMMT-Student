@@ -44,31 +44,7 @@
                     <el-row>
                         <el-col v-for=" student in students" v-if="student.id !== $auth.user.id" :span="8"
                                 v-bind:key="student.id">
-                            <div class="profile-card-container">
-                                <div @click="jump(student)" class="profile-card">
-                                    <el-row>
-                                        <el-col :span="12">
-                                            <el-avatar class="avatar" :src="avatar(student.id)"></el-avatar>
-
-                                        </el-col>
-                                        <el-col :span="12">
-                                            <div class="text">
-                                                <div class="name">姓名： {{ student.name }}</div>
-                                                <div class="score">奇异指数：
-                                                    <span v-if="student.score!== null">{{ student.score }}</span>
-                                                    <span v-else style="color: #F56C6C">未计算</span>
-                                                </div>
-                                                <div class="score">性格特点：
-                                                    <br/>
-                                                    <div style="flex">
-                                                        <span v-for="(trait, traitIndex) in getTraits(student.contact)" :key= "traitIndex" class="label">{{trait}}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </el-col>
-                                    </el-row>
-                                </div>
-                            </div>
+                            <StudentCard :student="student" />
                         </el-col>
                     </el-row>
                 </div>
@@ -214,11 +190,15 @@ export default {
         jump(student) {
             this.$router.push("/roommates/" + student.id)
         },
-        avatar(id) {
-            let base_url = "https://gravatar.loli.net/avatar/"
-            let email = new Date().getFullYear() + "rmmp." + id + "@chacuo.net"
-            let hash = md5(email)
-            return base_url + hash + "?d=retro"
+        avatar(qq, id) {
+            if (qq != null && qq.length > 0){
+                return "http://q.qlogo.cn/headimg_dl?dst_uin=" + qq + "&spec=640&img_type=jpg"
+            }else{
+                let base_url = "https://gravatar.loli.net/avatar/"
+                let email = new Date().getFullYear() + "rmmp." + id + "@chacuo.net"
+                let hash = md5(email)
+                return base_url + hash + "?d=retro"
+            }
         },
         quit() {
             this.$confirm("你确定要退出当前队伍吗？退出后如果队伍剩余人数少于2人，队伍将会自动解散。").then(() => {
@@ -266,7 +246,7 @@ export default {
             }else{
                 return null;
             }
-            
+
         }
     },
 }

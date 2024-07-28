@@ -8,7 +8,7 @@
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <div class="default-container detail">
-                    <el-avatar class="avatar" shape="square" :src="avatar(id)"></el-avatar>
+                    <el-avatar class="avatar" shape="square" :src="avatar(QQ, id)"></el-avatar>
                     <div class="basic-info">
                         <div class="name">姓名： {{ name }}</div>
                         <div class="team">组队状态：
@@ -26,12 +26,12 @@
                             <span v-else style="color: #F56C6C">未计算</span>
                         </div>
                         <div class="score">性格特点：
-                        <span v-for="(trait, traitIndex) in getTraits(contact)" :key= "traitIndex" class="label" style="flex">{{trait}}</span>
+                        <span v-for="(trait, traitIndex) in getTraits(contact)" :key= "traitIndex" class="label" :style="flex">{{trait}}</span>
                         </div>
                         <div class="contact">
                             <div><strong>QQ: </strong>{{ QQ }}</div>
                             <div><strong>Wechat: </strong>{{ Wechat }}</div>
-                            <div><strong>Phone: </strong>{{ Phone }}</div>
+<!--                            <div><strong>Phone: </strong>{{ Phone }}</div>-->
                         </div>
                         <div v-if="team == null">
                         </div>
@@ -53,36 +53,7 @@
                     <el-row>
                         <el-col v-for=" student in team.students" v-if="student.id !== id" :span="8"
                                 v-bind:key="student.id">
-                            <div class="profile-card-container">
-                                <div @click="jump(student)" class="profile-card">
-                                    <el-row>
-                                        <el-col :span="12">
-                                            <el-avatar class="avatar" :src="avatar(student.id)"></el-avatar>
-
-                                        </el-col>
-                                        <el-col :span="12">
-                                            <div class="text">
-                                                <div class="name">姓名： {{ student.name }}</div>
-                                                <div class="score">奇异指数：
-                                                    <span v-if="student.score!== null">{{ student.score }}</span>
-                                                    <span v-else style="color: #F56C6C">未计算</span>
-                                                </div>
-                                                <div class="score">性格特点：
-                                                    <br/>
-                                                    <div style="flex">
-                                                        <span v-for="(trait, traitIndex) in getTraits(student.contact)" :key= "traitIndex" class="label">{{trait}}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="contact">
-                                                    <div><strong>QQ: </strong>{{ student.QQ }}</div>
-                                                    <div><strong>Wechat: </strong>{{student.Wechat }}</div>
-                                                    <div><strong>Phone: </strong>{{ student.Phone }}</div>
-                                                </div>
-                                            </div>
-                                        </el-col>
-                                    </el-row>
-                                </div>
-                            </div>
+                            <StudentCard :student="student" />
                         </el-col>
                     </el-row>
                     <el-row>
@@ -145,11 +116,15 @@ export default {
         }
     },
     methods: {
-        avatar(id) {
-            let base_url = "https://gravatar.loli.net/avatar/"
-            let email = new Date().getFullYear() + "rmmp." + id + "@chacuo.net"
-            let hash = md5(email)
-            return base_url + hash + "?d=retro"
+        avatar(qq, id) {
+            if (qq != null && qq.length > 0){
+                return "http://q.qlogo.cn/headimg_dl?dst_uin=" + qq + "&spec=640&img_type=jpg"
+            }else{
+                let base_url = "https://gravatar.loli.net/avatar/"
+                let email = new Date().getFullYear() + "rmmp." + id + "@chacuo.net"
+                let hash = md5(email)
+                return base_url + hash + "?d=retro"
+            }
         },
         jump(student) {
             this.$router.push("/roommates/" + student.id)
