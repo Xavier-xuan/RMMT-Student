@@ -1,4 +1,4 @@
-# RMDP-Student
+# RMMT-Student
 
 ## Build Setup
 
