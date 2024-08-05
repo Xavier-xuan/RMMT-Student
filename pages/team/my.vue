@@ -55,7 +55,7 @@
                                             <div class="text">
                                                 <div class="name">姓名： {{ student.name }}</div>
                                                 <div class="score">奇异指数：
-                                                    <span v-if="student.score!== null">{{ student.score }}</span>
+                                                    <span v-if="student.score!== null">{{ Number(student.score).toFixed(2) }}</span>
                                                     <span v-else style="color: #F56C6C">未计算</span>
                                                 </div>
                                                 <div class="score">性格特点：

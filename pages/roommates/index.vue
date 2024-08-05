@@ -4,7 +4,7 @@
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <div class="default-container">
-                    <el-row v-for="group in student_groups_with_score">
+                    <el-row v-for="group in student_groups_with_score" v-bind:key="group.id">
                         <el-col v-for=" student in group" :span="8" v-bind:key="student.id">
                             <div class="profile-card-container">
                                 <div @click="jump(student)" class="profile-card">
@@ -20,7 +20,7 @@
                                                     <label v-if="student.mbti==='ISTJ'||student.mbti==='ISFJ'||student.mbti==='ESTJ'||student.mbti==='ESFJ'" class= "mbti-label-SJ">{{student.mbti}}</label>
                                                     <label v-if="student.mbti==='ISTP'||student.mbti==='ISFP'||student.mbti==='ESTP'||student.mbti==='ESFP'" class= "mbti-label-SP">{{student.mbti}}</label>    
                                                 </div>
-                                                <span class="score">奇异指数： <strong>{{ student.score }}</strong></span>
+                                                <span class="score">奇异指数： <strong>{{ Number(student.score).toFixed(2) }}</strong></span>
                                                 <div style="flex">
                                                     <span v-for="(trait, traitIndex) in getTraits(student.contact)" :key= "traitIndex" class="label">{{trait}}</span>
                                                 </div>
@@ -43,8 +43,8 @@
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <div class="default-container">
-                    <el-row v-for="group in student_groups_with_no_score">
-                        <el-col v-for=" student in group" :span="8">
+                    <el-row v-for="group in student_groups_with_no_score" v-bind:key="group.id">
+                        <el-col v-for=" student in group" :span="8" v-bind:key="student.id">
                             <div v-if="student.id != $auth.user.id" class="profile-card-container">
                                 <div @click="jump(student)" class="profile-card no-score">
                                     <el-row>
