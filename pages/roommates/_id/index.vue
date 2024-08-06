@@ -22,7 +22,7 @@
                             <span class="orange" v-else> 已组队 </span>
                         </div>
                         <div class="score">奇异指数：
-                            <span v-if="score!= null">{{ score }}</span>
+                            <span v-if="score!= null">{{ score | numRounding }}</span>
                             <span v-else style="color: #F56C6C">未计算</span>
                         </div>
                         <div class="score">性格特点：
@@ -236,6 +236,12 @@ export default {
             })
         }
 
+    },
+    filters: {
+        numRounding(num) {
+            num = parseFloat(num);
+            return isNaN(num) ? num : num.toFixed(2);
+        }
     }
 }
 </script>

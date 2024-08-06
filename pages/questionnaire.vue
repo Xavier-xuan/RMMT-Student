@@ -12,15 +12,11 @@
 
                     <el-dialog title="权重设置" :visible.sync="showWeightPlane">
                         <div class="tips">
-                            目前系统仅对能够量化评估的项目进行算法匹配，因此只能设置问卷中部分问题的权重，其他没有权重（或权重为0）的问题代表仅作个人资料展示，不作算法匹配的参考项目 <br/>
+                            目前系统仅对必填问题进行算法匹配，因此只能设置问卷中部分问题的权重，其他没有权重（或权重为0）的问题代表仅作个人资料展示，不作算法匹配的参考项目 <br/>
                             请将你认为的不重要问题的权重调低，重要问题的权重调高 <br/>
                             调整的范围应该在默认权重的 0~5 倍之间，千万不要超过10倍，否则这个问题极有可能被系统认为你评判室友的唯一标准
                         </div>
                         <el-table :data="questionWithWeight" stripe>
-<!--                            <el-table-column-->
-<!--                                prop="id"-->
-<!--                                label="#ID">-->
-<!--                            </el-table-column>-->
                             <el-table-column
                                 prop="title"
                                 label="问题">
