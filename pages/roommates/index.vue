@@ -4,7 +4,7 @@
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <div class="default-container">
-                    <el-row v-for="group in student_groups_with_score">
+                    <el-row v-for="group in student_groups_with_score" v-bind:key="group.id">
                         <el-col v-for=" student in group" :span="8" v-bind:key="student.id">
                             <StudentCard :student="student" />
                         </el-col>

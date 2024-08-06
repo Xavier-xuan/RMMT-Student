@@ -22,7 +22,11 @@
                             <span class="orange" v-else> 已组队 </span>
                         </div>
                         <div class="score">奇异指数：
+<<<<<<< HEAD
                             <span v-if="score!= null">{{ score | numRounding }}</span>
+=======
+                            <span v-if="score!= null">{{ Number(score).toFixed(2) }}</span>
+>>>>>>> a91fc9912bc55bf0d2883ce8d473bdfb03f083f8
                             <span v-else style="color: #F56C6C">未计算</span>
                         </div>
                         <div class="score">性格特点：
