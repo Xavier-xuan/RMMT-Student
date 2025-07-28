@@ -12,7 +12,15 @@
                 </el-col>
                 <el-col :span="15">
                     <div class="text">
-                        <div class="name">{{ student.name }} {{ student.province }}
+                        <div class="name" v-if="student.province !== null"> 
+                            <div class="province">来自{{ student.province }}的</div> 
+                            {{ student.name }} 
+                            <label v-if="isNT(student.mbti)" class= "mbti-label-NT">{{student.mbti}}</label>
+                            <label v-if="isNF(student.mbti)"" class= "mbti-label-NF">{{student.mbti}}</label>
+                            <label v-if="isSJ(student.mbti)" class= "mbti-label-SJ">{{student.mbti}}</label>
+                            <label v-if="isSP(student.mbti)" class= "mbti-label-SP">{{student.mbti}}</label>
+                        </div>
+                        <div class="name" v-else> {{ student.name }} 
                             <label v-if="isNT(student.mbti)" class= "mbti-label-NT">{{student.mbti}}</label>
                             <label v-if="isNF(student.mbti)"" class= "mbti-label-NF">{{student.mbti}}</label>
                             <label v-if="isSJ(student.mbti)" class= "mbti-label-SJ">{{student.mbti}}</label>
@@ -101,14 +109,13 @@ export default {
     .profile-card {
         border: #e6e6e6 solid 2px;
         border-radius: 12px;
-        min-height: 150px;
+        min-height: 170px;
         cursor: pointer;
-
 
         .avatar {
             width: 100px;
             height: 100px;
-            margin: 25px 25px;
+            margin: 30px 30px;
             display: inline-block;
         }
 
@@ -144,6 +151,10 @@ export default {
             .name{
                 font-size: 20px;
                 font-weight: bold;
+
+                .province{
+                    font-size: 10px
+                }
             }
 
             .score{

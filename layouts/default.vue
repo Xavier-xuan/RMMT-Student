@@ -79,14 +79,14 @@
         <el-dialog title="更新个人信息| Update Personal Information" :visible.sync="show_update_contact_panel">
             <el-form>
                 <el-form-item>
-                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="QQ" v-model="QQ"></el-input>
+                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="QQ" v-model="qq"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="Wechat" v-model="Wechat"></el-input>
+                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="Wechat" v-model="wechat"></el-input>
                 </el-form-item>
-<!--                <el-form-item>-->
-<!--                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="电话号码" v-model="Phone"></el-input>-->
-<!--                </el-form-item>-->
+                <el-form-item>
+                    <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="你来自哪里" v-model="province"></el-input>
+                </el-form-item>
                 <el-form-item>
                     <el-input type="textarea" :autosize = "{minRows: 1, maxRows: 1}" placeholder="MBTI（可以到www.16personalities.com上自行测试）" v-model="mbti"></el-input>
                 </el-form-item>
@@ -150,11 +150,11 @@ export default {
                     {validator: confirm_password, trigger: 'blur', required: true}
                 ],
             },
-            show_update_contact_panel: (this.$auth.user.QQ && this.$auth.user.QQ.length < 1 && this.$auth.user.Wechat && this.$auth.user.Wechat.length < 1),
+            show_update_contact_panel: (this.$auth.user.qq && this.$auth.user.qq.length < 1 && this.$auth.user.wechat && this.$auth.user.wechat.length < 1),
             contact: _.cloneDeep(this.$auth.user.contact),
-            QQ: _.cloneDeep(this.$auth.user.QQ),
-            Wechat: _.cloneDeep(this.$auth.user.Wechat),
-            // Phone: _.cloneDeep(this.$auth.user.Phone),
+            qq: _.cloneDeep(this.$auth.user.qq),
+            wechat: _.cloneDeep(this.$auth.user.wechat),
+            province: _.cloneDeep(this.$auth.user.province),
             mbti: _.cloneDeep(this.$auth.user.mbti)
         }
     },
@@ -180,9 +180,9 @@ export default {
         do_update_contact() {
             this.$axios.$post("/update_contact", {
                 contact: this.contact,
-                QQ:this.QQ,
-                Wechat:this.Wechat,
-                // Phone:this.Phone,
+                qq:this.qq,
+                wechat:this.wechat,
+                province:this.province,
                 mbti:this.mbti
             }).then(data => {
                 if (data.code === 200) {
