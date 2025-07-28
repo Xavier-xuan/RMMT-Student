@@ -4,7 +4,7 @@
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <div class="default-container">
-                    <el-steps :active="active_index()" align-center finish-status="success">
+                    <el-steps :active="active_index()" align-center finish-status="success" :direction="stepsDirection">
                         <el-step title="系统预开放">
                             <template v-slot:description>
                                 Some preparations of the system
@@ -65,6 +65,11 @@ export default {
     data() {
         return this.$store.state.system_settings
     },
+    computed: {
+        stepsDirection() {
+            return window.innerWidth <= 600 ? 'vertical' : 'horizontal'
+        }
+    },
     methods: {
         active_index() {
             let current = Date.now();
@@ -79,6 +84,12 @@ export default {
             else
                 return 4
         }
+    },
+    mounted() {
+        window.addEventListener('resize', this.$forceUpdate)
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.$forceUpdate)
     },
     async fetch({store}) {
         if (store.state.system_settings.step_1_start_at === null)
@@ -102,6 +113,34 @@ export default {
     .title {
         font-size: 20px;
         margin-bottom: 10px;
+    }
+}
+
+.default-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 16px 0;
+}
+
+@media (max-width: 600px) {
+    .default-container {
+        padding: 8px 2vw;
+    }
+    .sui-sui-nian {
+        font-size: 13px;
+        .title {
+            font-size: 16px;
+        }
+        .sub-title {
+            font-size: 15px;
+        }
+    }
+    .el-steps {
+        padding: 0 0;
+    }
+    .el-step__title, .el-step__description {
+        font-size: 13px !important;
+        word-break: break-all;
     }
 }
 </style>

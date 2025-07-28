@@ -272,4 +272,58 @@ export default {
     margin: 2px;
 }
 
+/* 移动端适配 */
+@media (max-width: 600px) {
+    /* 调整卡片布局 */
+    .el-col {
+        width: 100% !important;
+        margin-bottom: 10px;
+    }
+    
+    /* 调整表格显示 */
+    .el-table {
+        width: 100%;
+        font-size: 13px;
+    }
+    
+    /* 调整表格 ID 列宽度 */
+    .el-table .el-table__row td:nth-child(1),
+    .el-table .el-table__header th:nth-child(1) {
+        width: 30px !important;
+        min-width: 20px;
+        padding: 8px 5px;
+    }
+    
+
+    
+    /* 调整按钮大小和间距 */
+    .el-button {
+        margin: 5px;
+        font-size: 13px;
+        padding: 8px 15px;
+    }
+    
+    /* 调整标题大小 */
+    .card-title {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    
+    /* 调整学生卡片布局 */
+    .el-col[v-for] {
+        width: 100% !important;
+    }
+
+    /* 调整详情文字 */
+    .detail {
+        font-size: 14px;
+        line-height: 2;
+    }
+
+    /* 标签样式调整 */
+    .label {
+        font-size: 10px;
+        padding: 1px 3px;
+    }
+}
 </style>

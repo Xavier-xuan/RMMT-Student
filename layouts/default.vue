@@ -3,29 +3,20 @@
     <div>
         <el-container>
             <el-header>
-
-                <el-row class="header" text-align="middle"  justify="space-between" type="flex" >
+                <el-row class="header" text-align="middle" justify="space-between" type="flex">
                     <el-col class="site-name" :span="8">
                         <a href="/">Roommate Matcher</a>
                     </el-col>
-                    <el-col class="site-name" :span="4" >
-                    </el-col>
+                    <el-col class="site-name" :span="4"></el-col>
 
-                    <el-col class="menu" :lg="10" :md="12" style="overflow: hidden;text-align: right;">
-                        <el-menu ref="navigation_bar" mode="horizontal" :default-active="navUrl"
-                                 :router="true">
+                    <!-- 桌面端菜单 -->
+                    <el-col class="menu desktop-menu" :lg="10" :md="12" :xs="0" style="text-align: right;">
+                        <el-menu ref="navigation_bar" mode="horizontal" :default-active="navUrl" :router="true">
                             <el-menu-item index="/guide">向导</el-menu-item>
-
                             <el-menu-item index="/questionnaire">问卷</el-menu-item>
-
                             <el-menu-item index="/roommates">舍友大厅</el-menu-item>
-
-
-                            <el-menu-item v-if="$auth.user.team == null" index="/team/requests"> 组队请求
-                            </el-menu-item>
-
-                            <el-menu-item v-else index="/team/my"> 我的组队</el-menu-item>
-
+                            <el-menu-item v-if="$auth.user.team == null" index="/team/requests">组队请求</el-menu-item>
+                            <el-menu-item v-else index="/team/my">我的组队</el-menu-item>
                             <el-submenu index="account">
                                 <template slot="title">Hello，{{ this.$auth.user.name }}</template>
                                 <el-menu-item @click="show_update_contact_panel = true">更新个人信息 Update Personal Info
@@ -36,8 +27,42 @@
                             </el-submenu>
                         </el-menu>
                     </el-col>
+
+                    <!-- 移动端汉堡按钮 -->
+                    <el-col class="mobile-menu-btn" :xs="4" :sm="4" :md="0" :lg="0" style="text-align: right;">
+                        <el-button icon="el-icon-menu" @click="drawerVisible = true" circle plain></el-button>
+                    </el-col>
                 </el-row>
 
+                <!-- 移动端抽屉菜单 -->
+                <el-drawer
+                    title="菜单"
+                    :visible.sync="drawerVisible"
+                    direction="rtl"
+                    size="70%"
+                    class="mobile-menu-drawer"
+                >
+                    <el-menu
+                        mode="vertical"
+                        :default-active="navUrl"
+                        :router="true"
+                        @select="drawerVisible = false"
+                    >
+                        <el-menu-item index="/guide">向导</el-menu-item>
+                        <el-menu-item index="/questionnaire">问卷</el-menu-item>
+                        <el-menu-item index="/roommates">舍友大厅</el-menu-item>
+                        <el-menu-item v-if="$auth.user.team == null" index="/team/requests">组队请求</el-menu-item>
+                        <el-menu-item v-else index="/team/my">我的组队</el-menu-item>
+                        <el-submenu index="account">
+                            <template slot="title">Hello，{{ this.$auth.user.name }}</template>
+                            <el-menu-item @click="show_update_contact_panel = true">更新个人信息 Update Personal Info
+                            </el-menu-item>
+                            <el-menu-item @click="show_change_password_panel = true">修改密码 Change Password
+                            </el-menu-item>
+                            <el-menu-item @click="logout">退出登录 Logout</el-menu-item>
+                        </el-submenu>
+                    </el-menu>
+                </el-drawer>
             </el-header>
 
             <el-main>
@@ -155,7 +180,8 @@ export default {
             qq: _.cloneDeep(this.$auth.user.qq),
             wechat: _.cloneDeep(this.$auth.user.wechat),
             province: _.cloneDeep(this.$auth.user.province),
-            mbti: _.cloneDeep(this.$auth.user.mbti)
+            mbti: _.cloneDeep(this.$auth.user.mbti),
+            drawerVisible: false  // 添加这一行控制抽屉显示
         }
     },
     methods: {
@@ -239,5 +265,26 @@ a {
 .copyright{
     margin-top: 10px;
     font-size: 1.0rem;
+}
+
+/* 在你的 <style scoped> 里补充 */
+@media (max-width: 600px) {
+    .desktop-menu {
+        display: none !important;
+    }
+    .mobile-menu-btn {
+        display: block !important;
+    }
+    .site-name {
+        text-align: left;
+    }
+    .site-name a {
+        font-size: 1.5rem;
+    }
+}
+@media (min-width: 601px) {
+    .mobile-menu-btn {
+        display: none !important;
+    }
 }
 </style>

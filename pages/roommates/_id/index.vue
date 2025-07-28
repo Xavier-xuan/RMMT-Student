@@ -8,32 +8,34 @@
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <div class="default-container detail">
-                    <el-avatar class="avatar" shape="square" :src="avatar(qq, id)"></el-avatar>
-                    <div class="basic-info">
-                        <div class="name">姓名： {{ name }}</div>
-                        <div class="team">组队状态：
-                            <span class="green" v-if="team === null">
-                                未组队
+                    <div class="info-flex">
+                        <el-avatar class="avatar" shape="square" :src="avatar(qq, id)"></el-avatar>
+                        <div class="basic-info">
+                            <div class="name">姓名： {{ name }}</div>
+                            <div class="team">组队状态：
+                                <span class="green" v-if="team === null">
+                                    未组队
                                                         <el-button v-if="$auth.user.team == null" type="success"
                                                                    size="small"
                                                                    @click="team_up">与他组队</el-button>
-                            </span>
-                            <span class="red" v-else-if="team.students.length == 4"> 已组队 队已满员 </span>
-                            <span class="orange" v-else> 已组队 </span>
-                        </div>
-                        <div class="score">奇异指数：
-                            <span v-if="score!= null">{{ score | numRounding }}</span>
-                            <span v-else style="color: #F56C6C">未计算</span>
-                        </div>
-                        <div class="score">性格特点：
-                        <span v-for="(trait, traitIndex) in getTraits(contact)" :key= "traitIndex" class="label" :style="flex">{{trait}}</span>
-                        </div>
-                        <div class="contact">
-                            <div><strong>QQ: </strong>{{ QQ }}</div>
-                            <div><strong>Wechat: </strong>{{ Wechat }}</div>
+                                </span>
+                                <span class="red" v-else-if="team.students.length == 4"> 已组队 队已满员 </span>
+                                <span class="orange" v-else> 已组队 </span>
+                            </div>
+                            <div class="score">奇异指数：
+                                <span v-if="score!= null">{{ score | numRounding }}</span>
+                                <span v-else style="color: #F56C6C">未计算</span>
+                            </div>
+                            <div class="score">性格特点：
+                            <span v-for="(trait, traitIndex) in getTraits(contact)" :key= "traitIndex" class="label" :style="flex">{{trait}}</span>
+                            </div>
+                            <div class="contact">
+                                <div><strong>QQ: </strong>{{ qq }}</div>
+                                <div><strong>Wechat: </strong>{{ wechat }}</div>
 <!--                            <div><strong>Phone: </strong>{{ Phone }}</div>-->
-                        </div>
-                        <div v-if="team == null">
+                            </div>
+                            <div v-if="team == null">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -274,5 +276,106 @@ export default {
     font-size: 14px;
     color: #999;
 }
+
+.default-container.detail {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px 30px;
+}
+.avatar {
+    width: 900px !important;
+    height: 900px !important;
+    margin-right: 32px;
+    flex-shrink: 0;
+    display: block;
+    margin-top: 70px;    // 向下偏移
+    margin-left: -50px;    // 向左偏移
+}
+.basic-info {
+    flex: 1;
+    min-width: 0;
+}
+.info-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  width: 100%;
+}
+.avatar {
+  width: 200px !important;
+  height: 200px !important;
+  margin-right: 32px;
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+    .student-detail {
+        padding: 0 2vw;
+    }
+    .default-container.detail {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 5px;
+    }
+    .avatar {
+        width: 120px !important;
+        height: 120px !important;
+        margin-right: 0;
+        margin-bottom: 10px;
+        transform: none;
+        margin-top: 80px;
+        margin-left: -100px;
+    }
+    .basic-info {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    .name, .team, .score, .contact {
+        font-size: 14px;
+        word-break: break-all;
+    }
+    .label {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+    .card-title {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+    .el-row {
+        flex-direction: column !important;
+    }
+    .el-col {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+    .el-button {
+        font-size: 12px !important;
+        padding: 6px 12px !important;
+    }
+    .v-form-render {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+    .info-flex {
+      flex-direction: column;
+      align-items: center;
+    }
+}
+
+
+@media (max-width: 768px) {
+  .info-flex {
+    flex-direction: column;
+    align-items: center;
+  }
+  .avatar {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
+
 
 </style>

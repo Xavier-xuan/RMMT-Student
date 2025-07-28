@@ -2,12 +2,12 @@
     <div class="questionnaire">
         <PageHeader title="问卷调查 | Questionnaire"></PageHeader>
         <el-row type="flex" justify="center">
-            <el-col :span="20">
+            <el-col :span="20" :xs="24" :sm="22" :md="20" :lg="18" :xl="16">
                 <div class="default-container ">
                     <v-form-render :form-json="formJson" :form-data="formData" ref="vFormRef">
                     </v-form-render>
 
-                    <el-dialog title="权重设置" :visible.sync="showWeightPlane">
+                    <el-dialog title="权重设置" :visible.sync="showWeightPlane" :width="dialogWidth">
                         <div class="tips">
                             目前系统仅对必填问题进行算法匹配，因此只能设置问卷中部分问题的权重，其他没有权重（或权重为0）的问题代表仅作个人资料展示，不作算法匹配的参考项目 <br/>
                             请把你认为对你很重要的问题权重调高，不重要的问题权重调低或者设置为 0 喔 <br/>
@@ -17,7 +17,8 @@
                             所以如果某个问题的权重设置得过高，该问题很有可能成为判断相似度的唯一标准 <br />
                             如果所有问题的权重都设置成一样的，那么所有问题都差不多的<u>不</u>重要 <br />
                         </div>
-                        <el-table :data="questionWithWeight" stripe>
+                        <div style="overflow-x:auto;">
+                        <el-table :data="questionWithWeight" stripe style="min-width: 400px;">
                             <el-table-column
                                 prop="title"
                                 label="问题">
@@ -39,6 +40,7 @@
                                 </template>
                             </el-table-column>
                         </el-table>
+                        </div>
                         <br/>
                         <el-button class="save-btn" type="primary" @click="save">Save</el-button>
                     </el-dialog>
@@ -66,9 +68,19 @@ export default {
             formData: {},
             questionWithWeight: [],
             showWeightPlane: false,
+            dialogWidth: window.innerWidth < 600 ? '95%' : '50%',
         }
     },
+    mounted() {
+        window.addEventListener('resize', this.updateDialogWidth)
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.updateDialogWidth)
+    },
     methods: {
+        updateDialogWidth() {
+            this.dialogWidth = window.innerWidth < 600 ? '95%' : '50%'
+        },
         preSave() {
             this.$refs.vFormRef.getFormData().then(formData => {
                 this.showWeightPlane = true
@@ -183,5 +195,30 @@ export default {
     font-size: 14px;
     color: rgba(0, 0, 0, .87);
     margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+  .default-container {
+    padding: 8px !important;
+  }
+  .tips {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .el-dialog {
+    width: 95% !important;
+    min-width: unset !important;
+    margin: 0 auto;
+  }
+  .el-table {
+    font-size: 12px;
+  }
+  .el-button, .save-btn {
+    width: 100% !important;
+    margin-bottom: 10px;
+  }
+  .el-input-number {
+    width: 100% !important;
+  }
 }
 </style>

@@ -12,7 +12,14 @@
             <el-col :span="20">
                 <div class="default-container">
                     <el-row v-for="group in filtered_student_groups_with_score" :key="group[0].id">
-                        <el-col v-for="student in group" :key="student.id" :span="8">
+                        <el-col
+                            v-for="student in group"
+                            :key="student.id"
+                            :span="8"
+                            :xs="24"
+                            :sm="12"
+                            :md="8"
+                        >
                             <StudentCard :student="student" />
                         </el-col>
                     </el-row>
@@ -24,7 +31,14 @@
             <el-col :span="20">
                 <div class="default-container">
                     <el-row v-for="group in filtered_student_groups_with_no_score" :key="group[0].id">
-                        <el-col v-for="student in group" :key="student.id" :span="8">
+                        <el-col
+                            v-for="student in group"
+                            :key="student.id"
+                            :span="8"
+                            :xs="24"
+                            :sm="12"
+                            :md="8"
+                        >
                             <StudentCard :student="student" v-if="student.id != $auth.user.id" />
                         </el-col>
                     </el-row>
@@ -88,5 +102,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.roommates {
+  padding: 8px;
+}
+.default-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 8px 0;
+}
+@media (max-width: 768px) {
+  .default-container {
+    padding: 0 4px;
+  }
+  .roommates {
+    padding: 4px;
+  }
+}
 </style>

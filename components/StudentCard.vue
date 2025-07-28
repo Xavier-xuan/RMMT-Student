@@ -105,6 +105,7 @@ export default {
 .profile-card-container {
     padding: 0 20px;
     margin: 20px 0;
+    container-type: inline-size;
 
     .profile-card {
         border: #e6e6e6 solid 2px;
@@ -145,6 +146,7 @@ export default {
             display: inline-block;
             line-height: 1.5;
             overflow: hidden;
+            margin: 30px 40px;
             font-family: 'Belanosima', sans-serif;
             font-family: 'Noto Serif SC', serif;
 
@@ -238,5 +240,32 @@ export default {
 
 }
 
+@container (max-width: 250px) {
+  .avatar {
+    display: none !important;
+  }
+}
+
+// 移动端适配
+@media (max-width: 768px) {
+  .info-flex {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .avatar {
+    width: 70px !important;
+    height: 70px !important;
+    margin: 0 0 10px 0;
+    display: block;
+  }
+  .basic-info {
+    width: 100%;
+    margin-left: 0;
+    font-size: 14px;
+    text-align: center;
+    word-break: break-all;
+  }
+}
 
 </style>

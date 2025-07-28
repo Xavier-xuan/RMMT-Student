@@ -1,12 +1,12 @@
 <template>
     <div class="login-box">
         <div class="login-card">
-            <ZhixinLogo></ZhixinLogo>
+            <ZhixinLogo class="zhixin-logo"></ZhixinLogo>
             <div class="logo">
                 RMMT Student
             </div>
             <div class="login-form">
-                <el-form ref="login_form" :model="login_form" :rules="rules">
+                <el-form ref="login_form" :model="login_form" :rules="rules" label-position="top">
                     <el-form-item label="ID" prop="id">
                         <el-input v-model.number="login_form.id"></el-input>
                     </el-form-item>
@@ -15,7 +15,7 @@
                         <el-input type="password" v-model="login_form.password"></el-input>
                     </el-form-item>
 
-                    <el-button type="primary" @click="login">Login</el-button>
+                    <el-button type="primary" @click="login" style="width:100%;">Login</el-button>
                 </el-form>
             </div>
         </div>
@@ -85,20 +85,29 @@ export default {
     align-content: center;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    width: 100%;
-
+    height: 100vh;
+    width: 100vw;
+    background: #f5f6fa;
+    background-image: url('/login-background.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .login-form {
-    padding: 50px 30px;
+    padding: 32px 16px;
 }
 
 .login-card {
-    width: 30%;
+    width: 350px;
+    max-width: 95vw;
     background: #ffffff;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    padding: 10px;
+    padding: 16px 0 24px 0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .logo {
@@ -106,11 +115,29 @@ export default {
     text-align: center;
     font-family: Consolas, fantasy;
     font-size: 2rem;
-
 }
 
-.zhixin-logo{
+.zhixin-logo {
     text-align: center;
 }
 
+@media (max-width: 600px) {
+    .login-box {
+        background-image: none;
+        background-color: #f5f6fa;
+    }
+    .login-card {
+        width: 100%;
+        min-width: unset;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 8px 0 16px 0;
+    }
+    .login-form {
+        padding: 24px 4vw;
+    }
+    .logo {
+        font-size: 1.5rem;
+    }
+}
 </style>
