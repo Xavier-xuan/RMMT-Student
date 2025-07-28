@@ -85,6 +85,6 @@ export default {
         middleware: ['auth']
     },
     axios: {
-        baseURL: "http://localhost:5001/api/student"
+        baseURL: process.env.NUXT_API_URL + "/api/student"
     }
 }
