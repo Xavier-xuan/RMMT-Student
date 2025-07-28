@@ -85,6 +85,6 @@ export default {
         middleware: ['auth']
     },
     axios: {
-        baseURL: "http://localhost:5000/api/student"
+        baseURL: "http://localhost:5001/api/student"
     }
 }

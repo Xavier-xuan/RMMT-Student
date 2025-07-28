@@ -1,12 +1,9 @@
 <template>
-
     <div class="questionnaire">
         <PageHeader title="问卷调查 | Questionnaire"></PageHeader>
-        <el-row type="flex">
-
-            <el-col :span="14" :offset="2">
+        <el-row type="flex" justify="center">
+            <el-col :span="20">
                 <div class="default-container ">
-
                     <v-form-render :form-json="formJson" :form-data="formData" ref="vFormRef">
                     </v-form-render>
 
@@ -56,8 +53,6 @@
                 </div>
             </el-col>
         </el-row>
-
-
     </div>
 </template>
 

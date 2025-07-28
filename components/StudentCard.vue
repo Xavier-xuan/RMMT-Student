@@ -2,25 +2,29 @@
     <div class="profile-card-container">
         <div @click="jump(student)" class="profile-card">
             <el-row>
-                <el-col :span="12">
+                <el-col :span="9">
                     <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
+                    <span v-if="student.team_students_num !== undefined" :class="['team-flag', teamFlagColor(student.team_students_num)]">
+                        <template v-if="student.team_students_num === 0">未组队</template>
+                        <template v-else-if="student.team_students_num == 4">满员</template>
+                        <template v-else>{{ student.team_students_num }}/4</template>
+                    </span>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="15">
                     <div class="text">
-                        <div class="name">{{ student.name }}
-                            <label v-if="student.mbti==='INTJ'||student.mbti==='INTP'||student.mbti==='ENTP'||student.mbti==='ENTJ'" class= "mbti-label-NT">{{student.mbti}}</label>
-                            <label v-if="student.mbti==='INFJ'||student.mbti==='INFP'||student.mbti==='ENFP'||student.mbti==='ENFJ'" class= "mbti-label-NF">{{student.mbti}}</label>
-                            <label v-if="student.mbti==='ISTJ'||student.mbti==='ISFJ'||student.mbti==='ESTJ'||student.mbti==='ESFJ'" class= "mbti-label-SJ">{{student.mbti}}</label>
-                            <label v-if="student.mbti==='ISTP'||student.mbti==='ISFP'||student.mbti==='ESTP'||student.mbti==='ESFP'" class= "mbti-label-SP">{{student.mbti}}</label>
+                        <div class="name">{{ student.name }} {{ student.province }}
+                            <label v-if="isNT(student.mbti)" class= "mbti-label-NT">{{student.mbti}}</label>
+                            <label v-if="isNF(student.mbti)"" class= "mbti-label-NF">{{student.mbti}}</label>
+                            <label v-if="isSJ(student.mbti)" class= "mbti-label-SJ">{{student.mbti}}</label>
+                            <label v-if="isSP(student.mbti)" class= "mbti-label-SP">{{student.mbti}}</label>
                         </div>
                         <span class="score">匹配指数： <strong>{{ student.score | numRounding }}</strong></span>
                         <div>
                             <span v-for="(trait, traitIndex) in getTraits(student.contact)" :key= "traitIndex" class="label">{{trait}}</span>
                         </div>
                         <div class="contact">
-                            <div><strong>QQ: </strong>{{ student.QQ }}</div>
-                            <div><strong>Wechat: </strong>{{student.Wechat }}</div>
-                            <div v-if="student.Phone"><strong>Phone: </strong>{{ student.Phone }}</div>
+                            <div><strong>QQ: </strong>{{ student.qq }}</div>
+                            <div><strong>Wechat: </strong>{{student.wechat }}</div>
                         </div>
                     </div>
                 </el-col>
@@ -42,8 +46,8 @@ export default {
     },
     methods: {
         avatar(student) {
-            if (student.QQ && student.QQ.length > 0) {
-                return "https://q.qlogo.cn/headimg_dl?dst_uin=" + student.QQ + "&spec=640&img_type=jpg";
+            if (student.qq && student.qq.length > 0) {
+                return "https://q.qlogo.cn/headimg_dl?dst_uin=" + student.qq + "&spec=640&img_type=jpg";
             } else {
                 const base_url = "https://gravatar.loli.net/avatar/";
                 const email = new Date().getFullYear() + "rmmp." + student.id + "@chacuo.net";
@@ -72,6 +76,11 @@ export default {
         },
         isSP(mbti) {
             return ['ISTP', 'ISFP', 'ESTP', 'ESFP'].includes(mbti);
+        },
+        teamFlagColor(num) {
+            if (num === 0) return 'flag-green';
+            if (num === 4) return 'flag-red';
+            return 'flag-orange';
         }
     },
     filters: {
@@ -90,8 +99,8 @@ export default {
     margin: 20px 0;
 
     .profile-card {
-        border: #e6e6e6 solid 1px;
-        border-radius: 2px;
+        border: #e6e6e6 solid 2px;
+        border-radius: 12px;
         min-height: 150px;
         cursor: pointer;
 
@@ -101,6 +110,28 @@ export default {
             height: 100px;
             margin: 25px 25px;
             display: inline-block;
+        }
+
+        .team-flag {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            z-index: 20;
+            padding: 2px 12px 2px 12px;
+            border-radius: 0 10px 0 12px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .flag-green {
+            background: #4caf50;
+        }
+        .flag-red {
+            background: #ff5252;
+        }
+        .flag-orange {
+            background: #ff9800;
         }
 
         .text {

@@ -23,7 +23,6 @@ export default {
     z-index: -1;
     position: absolute;
     background-image: url("https://s2.loli.net/2022/02/01/X5meEt3qr4bKPZB.jpg");
-
 }
 
 .content {

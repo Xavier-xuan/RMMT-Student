@@ -1,11 +1,18 @@
 <template>
     <div class="roommates">
         <PageHeader title="舍友大厅 | Matching Hall"></PageHeader>
+        <el-row type="flex" justify="center" class="mb-4">
+            <el-switch
+                v-model="onlyShowUnteamed"
+                active-text="仅显示未组队/未满员同学"
+                inactive-text="显示所有推荐"
+            />
+        </el-row>
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <div class="default-container">
-                    <el-row v-for="group in student_groups_with_score" v-bind:key="group.id">
-                        <el-col v-for=" student in group" :span="8" v-bind:key="student.id">
+                    <el-row v-for="group in filtered_student_groups_with_score" :key="group[0].id">
+                        <el-col v-for="student in group" :key="student.id" :span="8">
                             <StudentCard :student="student" />
                         </el-col>
                     </el-row>
@@ -16,13 +23,12 @@
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <div class="default-container">
-                    <el-row v-for="group in student_groups_with_no_score">
-                        <el-col v-for=" student in group" :span="8">
+                    <el-row v-for="group in filtered_student_groups_with_no_score" :key="group[0].id">
+                        <el-col v-for="student in group" :key="student.id" :span="8">
                             <StudentCard :student="student" v-if="student.id != $auth.user.id" />
                         </el-col>
                     </el-row>
                 </div>
-
             </el-col>
         </el-row>
     </div>
@@ -36,7 +42,24 @@ export default {
     data() {
         return {
             student_groups_with_score: [],
-            student_groups_with_no_score: []
+            student_groups_with_no_score: [],
+            onlyShowUnteamed: false
+        }
+    },
+    computed: {
+        filtered_student_groups_with_score() {
+            if (!this.onlyShowUnteamed) return this.student_groups_with_score
+            const unteamed = this.student_groups_with_score
+            .flat()
+            .filter(student => student.team_students_num < 4)
+            return _.chunk(unteamed, 3)
+        },
+        filtered_student_groups_with_no_score() {
+            if (!this.onlyShowUnteamed) return this.student_groups_with_no_score
+            const unteamed = this.student_groups_with_no_score
+            .flat()
+            .filter(student => student.team_students_num < 4)
+            return _.chunk(unteamed, 3)
         }
     },
     async asyncData({$axios, $auth}) {

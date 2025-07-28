@@ -51,7 +51,6 @@
                             来自学长的一些碎碎念
                         </div>
                         <div class="content" v-html="$md.render(this.tips)">
-
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <div class="default-container detail">
-                    <el-avatar class="avatar" shape="square" :src="avatar(QQ, id)"></el-avatar>
+                    <el-avatar class="avatar" shape="square" :src="avatar(qq, id)"></el-avatar>
                     <div class="basic-info">
                         <div class="name">姓名： {{ name }}</div>
                         <div class="team">组队状态：
@@ -102,9 +102,9 @@ export default {
             id: null,
             name: null,
             contact: null,
-            QQ: null,
-            Wechat: null,
-            Phone: null,
+            qq: null,
+            wechat: null,
+            province: null,
             team_id: null,
             team: null,
             has_answered_questionnaire: false,

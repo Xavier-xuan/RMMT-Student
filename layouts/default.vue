@@ -229,6 +229,7 @@ a {
 
 .el-main {
     min-height: calc(100vh - 120px);
+    background: linear-gradient(90deg, #fff2de 0%, #fdce8e 100%);
 }
 
 .el-footer{
