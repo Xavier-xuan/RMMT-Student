@@ -1,41 +1,39 @@
 <template>
     <div class="profile-card-container">
         <div @click="jump(student)" class="profile-card">
-            <el-row>
-                <el-col :span="9">
-                    <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
-                    <span v-if="student.team_students_num !== undefined" :class="['team-flag', teamFlagColor(student.team_students_num)]">
-                        <template v-if="student.team_students_num === 0">未组队</template>
-                        <template v-else-if="student.team_students_num == 4">满员</template>
-                        <template v-else>{{ student.team_students_num }}/4</template>
-                    </span>
-                </el-col>
-                <el-col :span="15">
-                    <div class="text">
-                        <div class="name" v-if="student.province !== null"> 
-                            <div class="province">来自{{ student.province }}的</div> 
-                            {{ student.name }} 
-                            <label v-if="isNT(student.mbti)" class= "mbti-label-NT">{{student.mbti}}</label>
-                            <label v-if="isNF(student.mbti)"" class= "mbti-label-NF">{{student.mbti}}</label>
-                            <label v-if="isSJ(student.mbti)" class= "mbti-label-SJ">{{student.mbti}}</label>
-                            <label v-if="isSP(student.mbti)" class= "mbti-label-SP">{{student.mbti}}</label>
-                        </div>
-                        <div class="name" v-else> {{ student.name }} 
-                            <label v-if="isNT(student.mbti)" class= "mbti-label-NT">{{student.mbti}}</label>
-                            <label v-if="isNF(student.mbti)"" class= "mbti-label-NF">{{student.mbti}}</label>
-                            <label v-if="isSJ(student.mbti)" class= "mbti-label-SJ">{{student.mbti}}</label>
-                            <label v-if="isSP(student.mbti)" class= "mbti-label-SP">{{student.mbti}}</label>
-                        </div>
-                        <span class="score">匹配指数： <strong>{{ student.score | numRounding }}</strong></span>
-                        <div>
-                            <span v-for="(trait, traitIndex) in getTraits(student.contact)" :key= "traitIndex" class="label">{{trait}}</span>
-                        </div>
-                        <div class="contact">
-                            <div><strong>QQ: </strong>{{ student.qq }}</div>
-                            <div><strong>Wechat: </strong>{{student.wechat }}</div>
-                        </div>
+            <el-row type="flex" justify="center">
+                <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
+                <span v-if="student.team_students_num !== undefined" :class="['team-flag', teamFlagColor(student.team_students_num)]">
+                    <template v-if="student.team_students_num === 0">未组队</template>
+                    <template v-else-if="student.team_students_num == 4">满员</template>
+                    <template v-else>{{ student.team_students_num }}/4</template>
+                </span>
+            </el-row>
+            <el-row type="flex" justify="center">
+                <div class="text">
+                    <div class="name" v-if="student.province !== null"> 
+                        <div class="province">来自{{ student.province }}的</div> 
+                        {{ student.name }} 
+                        <label v-if="isNT(student.mbti)" class= "mbti-label-NT">{{student.mbti}}</label>
+                        <label v-if="isNF(student.mbti)"" class= "mbti-label-NF">{{student.mbti}}</label>
+                        <label v-if="isSJ(student.mbti)" class= "mbti-label-SJ">{{student.mbti}}</label>
+                        <label v-if="isSP(student.mbti)" class= "mbti-label-SP">{{student.mbti}}</label>
                     </div>
-                </el-col>
+                    <div class="name" v-else> {{ student.name }} 
+                        <label v-if="isNT(student.mbti)" class= "mbti-label-NT">{{student.mbti}}</label>
+                        <label v-if="isNF(student.mbti)"" class= "mbti-label-NF">{{student.mbti}}</label>
+                        <label v-if="isSJ(student.mbti)" class= "mbti-label-SJ">{{student.mbti}}</label>
+                        <label v-if="isSP(student.mbti)" class= "mbti-label-SP">{{student.mbti}}</label>
+                    </div>
+                    <span class="score">匹配指数： <strong>{{ student.score | numRounding }}</strong></span>
+                    <div>
+                        <span v-for="(trait, traitIndex) in getTraits(student.contact)" :key= "traitIndex" class="label">{{trait}}</span>
+                    </div>
+                    <div class="contact">
+                        <div><strong>QQ: </strong>{{ student.qq }}</div>
+                        <div><strong>Wechat: </strong>{{student.wechat }}</div>
+                    </div>
+                </div>
             </el-row>
         </div>
     </div>
@@ -103,7 +101,7 @@ export default {
 <style lang="scss" scoped>
 @import url('https://fonts.googleapis.com/css2?family=Belanosima&family=Noto+Serif+SC&display=swap');
 .profile-card-container {
-    padding: 0 20px;
+    padding: 0px 20px;
     margin: 20px 0;
     container-type: inline-size;
 
@@ -116,7 +114,7 @@ export default {
         .avatar {
             width: 100px;
             height: 100px;
-            margin: 30px 30px;
+            margin: 20px 0 0 0;
             display: inline-block;
         }
 
@@ -127,11 +125,12 @@ export default {
             z-index: 20;
             padding: 2px 12px 2px 12px;
             border-radius: 0 10px 0 12px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: #fff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
+
         .flag-green {
             background: #4caf50;
         }
@@ -240,32 +239,26 @@ export default {
 
 }
 
-@container (max-width: 250px) {
-  .avatar {
-    display: none !important;
-  }
-}
-
-// 移动端适配
-@media (max-width: 768px) {
-  .info-flex {
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-  .avatar {
-    width: 70px !important;
-    height: 70px !important;
-    margin: 0 0 10px 0;
-    display: block;
-  }
-  .basic-info {
-    width: 100%;
-    margin-left: 0;
-    font-size: 14px;
-    text-align: center;
-    word-break: break-all;
-  }
-}
+// // 移动端适配
+// @media (max-width: 768px) {
+//   .info-flex {
+//     flex-direction: column;
+//     align-items: center;
+//     width: 100%;
+//   }
+//   .avatar {
+//     width: 70px !important;
+//     height: 70px !important;
+//     margin: 0 0 10px 0;
+//     display: block;
+//   }
+//   .basic-info {
+//     width: 100%;
+//     margin-left: 0;
+//     font-size: 14px;
+//     text-align: center;
+//     word-break: break-all;
+//   }
+// }
 
 </style>

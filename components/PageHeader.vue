@@ -1,6 +1,6 @@
 <template>
     <el-row>
-        <el-col :span="12" :offset="2">
+        <el-col :span="24" :offset="2">
             <div class="page-header">
                 {{title}}
                 <slot name="title"></slot>
@@ -20,5 +20,11 @@ export default {
 .page-header{
     color: rgba(0,0,0,.87);
     font-size: 1.8rem;
+}
+
+@media (max-width: 600px) {
+    .page-header {
+        font-size: 1.2rem;
+    }
 }
 </style>

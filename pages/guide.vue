@@ -118,13 +118,11 @@ export default {
 
 .default-container {
     max-width: 100%;
-    margin: 0 auto;
-    padding: 16px 0;
 }
 
 @media (max-width: 600px) {
     .default-container {
-        padding: 8px 2vw;
+        padding: 20px 2vw 20px 2vw;
     }
     .sui-sui-nian {
         font-size: 13px;
