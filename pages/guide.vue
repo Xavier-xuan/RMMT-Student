@@ -116,11 +116,7 @@ export default {
     }
 }
 
-.default-container {
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 16px 0;
-}
+
 
 @media (max-width: 600px) {
     .default-container {
