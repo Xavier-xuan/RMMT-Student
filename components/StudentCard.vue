@@ -55,7 +55,7 @@ export default {
     methods: {
         avatar(student) {
             if (student.qq && student.qq.length > 0) {
-                return "https://q.qlogo.cn/headimg_dl?dst_uin=" + student.qq + "&spec=640&img_type=jpg";
+                return "https://q.qlogo.cn/headimg_dl?dst_uin=" + student.qq + "&spec=640";
             } else {
                 const base_url = "https://gravatar.loli.net/avatar/";
                 const email = new Date().getFullYear() + "rmmp." + student.id + "@chacuo.net";
