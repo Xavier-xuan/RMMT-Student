@@ -28,7 +28,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build and push student
       working-directory: .
