@@ -175,7 +175,7 @@ export default {
                     {validator: confirm_password, trigger: 'blur', required: true}
                 ],
             },
-            show_update_contact_panel: (this.$auth.user.qq && this.$auth.user.qq.length < 1 && this.$auth.user.wechat && this.$auth.user.wechat.length < 1),
+            show_update_contact_panel: ((!this.$auth.user.qq || this.$auth.user.qq.length < 1) && (!this.$auth.user.wechat || this.$auth.user.wechat.length < 1)),
             contact: _.cloneDeep(this.$auth.user.contact),
             qq: _.cloneDeep(this.$auth.user.qq),
             wechat: _.cloneDeep(this.$auth.user.wechat),
