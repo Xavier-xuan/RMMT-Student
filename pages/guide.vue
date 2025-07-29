@@ -116,8 +116,6 @@ export default {
     }
 }
 
-
-
 @media (max-width: 600px) {
     .default-container {
         padding: 8px 2vw;
