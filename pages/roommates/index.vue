@@ -1,20 +1,41 @@
 <template>
     <div class="roommates">
         <PageHeader title="舍友大厅 | Matching Hall"></PageHeader>
-        <el-row type="flex" justify="center">
-            <el-switch
-                v-model="onlyShowUnteamed"
-                active-text="仅显示未组队/未满员同学"
-                inactive-text="显示所有推荐"
-            />
-        </el-row>
         
-        <el-row type="flex" justify="center">
+        <!-- 控制面板 -->
+        <el-row type="flex" justify="center" class="control-panel">
             <el-col :span="20">
                 <div class="default-container">
+                    <el-row type="flex" justify="space-between" align="middle">
+                        <el-col :span="12">
+                            <el-switch
+                                v-model="onlyShowUnteamed"
+                                active-text="仅显示未组队/未满员同学"
+                                inactive-text="显示所有推荐"
+                            />
+                        </el-col>
+                        <el-col :span="8" style="text-align: right;">
+                            <span style="margin-right: 10px;">每页显示:</span>
+                            <el-select v-model="pageSize" size="small" style="width: 80px;">
+                                <el-option label="8" :value="8"></el-option>
+                                <el-option label="12" :value="12"></el-option>
+                                <el-option label="16" :value="16"></el-option>
+                                <el-option label="20" :value="20"></el-option>
+                            </el-select>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-col>
+        </el-row>
+        
+        <!-- 有评分的学生 -->
+        <el-row type="flex" justify="center" v-if="paginatedStudentsWithScore.length > 0">
+            <el-col :span="20">
+                <div class="default-container">
+                    <h3 class="section-title">推荐匹配 ({{ filtered_student_with_score.length }}人)</h3>
                     <div class="students-grid">
                         <div 
-                            v-for="student in filtered_student_with_score" 
+                            v-for="student in paginatedStudentsWithScore" 
                             :key="student.id"
                             class="student-card-wrapper"
                         >
@@ -25,21 +46,41 @@
             </el-col>
         </el-row>
         
-        <el-row type="flex" justify="center">
+        <!-- 无评分的学生 -->
+        <el-row type="flex" justify="center" v-if="paginatedStudentsWithNoScore.length > 0">
             <el-col :span="20">
                 <div class="default-container">
+                    <h3 class="section-title">其他同学 ({{ filtered_student_with_no_score.length }}人)</h3>
                     <div class="students-grid">
                         <div 
-                            v-for="student in filtered_student_with_no_score" 
+                            v-for="student in paginatedStudentsWithNoScore" 
                             :key="student.id"
                             class="student-card-wrapper"
-                            v-if="student.id != $auth.user.id"
                         >
                             <StudentCard :student="student" />
                         </div>
                     </div>
                 </div>
             </el-col>   
+        </el-row>
+        
+        <!-- 分页组件 -->
+        <el-row type="flex" justify="center" v-if="totalPages > 1">
+            <el-col :span="20">
+                <div class="default-container">
+                    <div class="pagination-container">
+                        <el-pagination
+                            @current-change="handleCurrentChange"
+                            :current-page="currentPage"
+                            :page-size="pageSize"
+                            :total="totalStudents"
+                            layout="total, prev, pager, next, jumper"
+                            background
+                        >
+                        </el-pagination>
+                    </div>
+                </div>
+            </el-col>
         </el-row>
     </div>
 </template>
@@ -52,7 +93,9 @@ export default {
         return {
             student_with_score: [],
             student_with_no_score: [],
-            onlyShowUnteamed: false
+            onlyShowUnteamed: false,
+            currentPage: 1,
+            pageSize: 12
         }
     },
     computed: {
@@ -67,6 +110,61 @@ export default {
             const unteamed = this.student_with_no_score
                 .filter(student => student.team_students_num < 4)
             return unteamed
+        },
+        allFilteredStudents() {
+            return [...this.filtered_student_with_score, ...this.filtered_student_with_no_score]
+        },
+        totalStudents() {
+            return this.allFilteredStudents.length
+        },
+        totalPages() {
+            return Math.ceil(this.totalStudents / this.pageSize)
+        },
+        currentPageStudents() {
+            const start = (this.currentPage - 1) * this.pageSize
+            const end = start + this.pageSize
+            return this.allFilteredStudents.slice(start, end)
+        },
+        paginatedStudentsWithScore() {
+            const scoreCount = this.filtered_student_with_score.length
+            const start = (this.currentPage - 1) * this.pageSize
+            const end = start + this.pageSize
+            
+            if (start >= scoreCount) return []
+            if (end <= scoreCount) {
+                return this.filtered_student_with_score.slice(start, end)
+            } else {
+                return this.filtered_student_with_score.slice(start, scoreCount)
+            }
+        },
+        paginatedStudentsWithNoScore() {
+            const scoreCount = this.filtered_student_with_score.length
+            const start = (this.currentPage - 1) * this.pageSize
+            const end = start + this.pageSize
+            
+            if (end <= scoreCount) return []
+            if (start >= scoreCount) {
+                const noScoreStart = start - scoreCount
+                const noScoreEnd = end - scoreCount
+                return this.filtered_student_with_no_score.slice(noScoreStart, noScoreEnd)
+            } else {
+                const noScoreStart = 0
+                const noScoreEnd = end - scoreCount
+                return this.filtered_student_with_no_score.slice(noScoreStart, noScoreEnd)
+            }
+        }
+    },
+    watch: {
+        onlyShowUnteamed() {
+            this.currentPage = 1
+        },
+        pageSize() {
+            this.currentPage = 1
+        }
+    },
+    methods: {
+        handleCurrentChange(page) {
+            this.currentPage = page
         }
     },
     async asyncData({$axios, $auth}) {
@@ -98,9 +196,21 @@ export default {
     padding: 8px;
 }
 
+.control-panel {
+    margin-bottom: 20px;
+}
+
 .default-container {
     max-width: 100%;
     padding: 20px;
+}
+
+.section-title {
+    margin-bottom: 20px;
+    color: #409EFF;
+    font-weight: 500;
+    border-bottom: 2px solid #EBEEF5;
+    padding-bottom: 10px;
 }
 
 .students-grid {
@@ -114,6 +224,14 @@ export default {
     width: 100%;
 }
 
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #EBEEF5;
+}
+
 @container (max-width: 600px) {
     .default-container {
         padding: 8px !important;
@@ -121,6 +239,11 @@ export default {
     
     .students-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .control-panel .el-col {
+        text-align: center;
+        margin-bottom: 10px;
     }
 }
 
