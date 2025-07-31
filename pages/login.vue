@@ -35,6 +35,22 @@
                 >
                     {{ loading ? '登录中...' : '登录 / Login' }}
                 </el-button>
+
+                <div class="cas-login-divider">
+                    <span class="divider-text">或使用统一认证登录</span>
+                </div>
+
+                <el-button 
+                    type="success" 
+                    @click="casLogin" 
+                    size="large"
+                    class="cas-login-button"
+                    :loading="casLoading"
+                >
+                    <i class="el-icon-s-promotion"></i>
+                    {{ casLoading ? '统一认证中...' : 'CAS统一认证登录' }}
+                </el-button>
+
             </el-form>
         </div>
     </div>
@@ -96,6 +112,17 @@ export default {
                     return false
                 }
             })
+        }, 3000),
+        casLogin: _.throttle(async function() {
+            this.casLoading = true
+            try {
+                // 跳转到后端CAS登录入口
+                window.location.href = `${this.$axios.defaults.baseURL}/cas/login`
+            } catch (e) {
+                console.error(e)
+                this.$message.error("CAS登录跳转失败")
+                this.casLoading = false
+            }
         }, 3000)
     }
 }
@@ -250,6 +277,76 @@ export default {
     .logo {
         font-size: 1.6rem;
         margin-bottom: 20px;
+    }
+}
+
+/* 添加以下新样式 */
+.cas-login-divider {
+    position: relative;
+    margin: 24px 0;
+    text-align: center;
+}
+
+.cas-login-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e4e7ed;
+    z-index: 1;
+}
+
+.divider-text {
+    position: relative;
+    display: inline-block;
+    padding: 0 12px;
+    background-color: #fff;
+    color: #909399;
+    font-size: 14px;
+    z-index: 2;
+}
+
+.cas-login-button {
+    width: 100%;
+    height: 48px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #67c23a 0%, #5daf34 100%);
+    border: none;
+    box-shadow: 0 4px 12px rgba(103, 194, 58, 0.3);
+    transition: all 0.3s ease;
+    margin-top: 0;
+    color: #fff;
+}
+
+.cas-login-button:hover {
+    background: linear-gradient(135deg, #5daf34 0%, #529b2e 100%);
+    box-shadow: 0 6px 20px rgba(103, 194, 58, 0.4);
+    transform: translateY(-1px);
+}
+
+.cas-login-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(103, 194, 58, 0.3);
+}
+
+.cas-login-button i {
+    margin-right: 8px;
+    font-size: 18px;
+}
+
+@media (max-width: 480px) {
+    .cas-login-button {
+        height: 44px;
+        font-size: 15px;
+    }
+    
+    .cas-login-button i {
+        font-size: 16px;
     }
 }
 </style>
