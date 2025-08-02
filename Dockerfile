@@ -15,7 +15,8 @@ COPY . .
 
 # 设置环境变量
 ENV NODE_ENV=production
-ENV NUXT_API_URL=https://rmmt-api.default.svc.cluster.local
+ENV NUXT_API_URL=https://rmmt-api.default.svc.cluster.local 
+# 可能需要修改 
 
 # 构建静态文件
 RUN yarn generate
