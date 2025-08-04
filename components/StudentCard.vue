@@ -5,9 +5,9 @@
                 <el-avatar class="avatar" :src="avatar(student)"></el-avatar>
                 <span v-if="student.team_students_num !== undefined" :class="['team-flag', teamFlagColor(student.team_students_num)]">
                     <template v-if="student.team_students_num === 0">未组队</template>
-                    <template v-else-if="student.team_students_num == 4">满员</template>
-                    <template v-else>{{ student.team_students_num }}/4</template>
-                </span>
+                    <template v-else-if="student.team_students_num == team_max_student_count">满员</template>
+                    <template v-else>{{ student.team_students_num }}/{{ team_max_student_count }}</template>
+                </span> 
             </el-row>
             <el-row type="flex" justify="center">
                 <div class="text">
@@ -48,6 +48,10 @@ export default {
         student: {
             type: Object,
             required: true
+        },
+        team_max_student_count: {
+            type: Number,
+            required: true
         }
     },
     methods: {
@@ -85,9 +89,9 @@ export default {
         },
         teamFlagColor(num) {
             if (num === 0) return 'flag-green';
-            if (num === 4) return 'flag-red';
+            if (num === this.team_max_student_count) return 'flag-red';
             return 'flag-orange';
-        }
+        },
     },
     filters: {
         numRounding(num) {

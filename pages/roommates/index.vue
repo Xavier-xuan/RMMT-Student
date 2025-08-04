@@ -39,7 +39,7 @@
                             :key="student.id"
                             class="student-card-wrapper"
                         >
-                            <StudentCard :student="student" />
+                            <StudentCard :student="student" :team_max_student_count="team_max_student_count" />
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                             :key="student.id"
                             class="student-card-wrapper"
                         >
-                            <StudentCard :student="student" />
+                            <StudentCard :student="student" :team_max_student_count="team_max_student_count" />
                         </div>
                     </div>
                 </div>
@@ -95,20 +95,21 @@ export default {
             student_with_no_score: [],
             onlyShowUnteamed: false,
             currentPage: 1,
-            pageSize: 12
+            pageSize: 12,
+            team_max_student_count: 4
         }
     },
     computed: {
         filtered_student_with_score() {
             if (!this.onlyShowUnteamed) return this.student_with_score
             const unteamed = this.student_with_score
-                .filter(student => student.team_students_num < 4)
+                .filter(student => student.team_students_num < this.team_max_student_count)
             return unteamed
         },
         filtered_student_with_no_score() {
             if (!this.onlyShowUnteamed) return this.student_with_no_score
             const unteamed = this.student_with_no_score
-                .filter(student => student.team_students_num < 4)
+                .filter(student => student.team_students_num < this.team_max_student_count)
             return unteamed
         },
         allFilteredStudents() {
@@ -165,7 +166,7 @@ export default {
     methods: {
         handleCurrentChange(page) {
             this.currentPage = page
-        }
+        },
     },
     async asyncData({$axios, $auth}) {
         let data = await $axios.$get("/team/recommend_teammates").then(data => {
@@ -178,7 +179,14 @@ export default {
             }
         })
 
-        return data
+        let team_max_student_count = await $axios.$get("/system_setting").then(data => {
+            if (data.code === 200) {
+                const setting = data.data.team_max_student_count
+                return setting ? parseInt(setting) || 4 : 4
+            }
+        })
+
+        return _.assign(data, {team_max_student_count})
     },
     filters: {
         numRounding(num) {
