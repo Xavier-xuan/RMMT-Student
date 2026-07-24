@@ -224,7 +224,10 @@ export default {
         safeLoadGoogleTranslate() {
             if (process.server) return
 
+            console.info('[translate] start loading Google Translate script')
+
             window.googleTranslateElementInit = () => {
+                console.info('[translate] googleTranslateElementInit called')
                 try {
                     // eslint-disable-next-line no-undef
                     new google.translate.TranslateElement(
@@ -232,10 +235,19 @@ export default {
                         'google_translate_element'
                     )
                     this.showTranslate = true
+                    this.translateFailed = false
+                    console.info('[translate] TranslateElement initialized successfully')
                 } catch (e) {
                     this.translateFailed = true
                     this.showTranslate = false
+                    console.error('[translate] TranslateElement initialization failed', e)
                 }
+            }
+
+            const existing = document.querySelector('script[src*="translate.google.com/translate_a/element.js"]')
+            if (existing) {
+                console.info('[translate] script already exists, skip append')
+                return
             }
 
             const s = document.createElement('script')
@@ -243,19 +255,26 @@ export default {
             s.async = true
             s.defer = true
 
-            s.onerror = () => {
+            s.onload = () => {
+                clearTimeout(timer)
+                console.info('[translate] script loaded')
+            }
+
+            s.onerror = (e) => {
+                clearTimeout(timer)
                 this.translateFailed = true
                 this.showTranslate = false
+                console.error('[translate] script load error', e)
             }
 
             const timer = setTimeout(() => {
                 this.translateFailed = true
                 this.showTranslate = false
+                console.warn('[translate] script load timeout (8s)')
             }, 8000)
 
-            s.onload = () => clearTimeout(timer)
-
             document.body.appendChild(s)
+            console.info('[translate] script tag appended')
         }
     },
     created() {
