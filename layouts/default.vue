@@ -8,7 +8,7 @@
                         <a href="/">Roommate Matcher</a>
                     </el-col>
                     <el-col class="site-name" :span="4" style="display: flex; align-items: center; justify-content: center;">
-                        <div id="google_translate_element"></div>
+                        <div id="google_translate_element" v-show="showTranslate"></div>
                     </el-col>
 
                     <!-- 桌面端菜单 -->
@@ -183,7 +183,9 @@ export default {
             wechat: _.cloneDeep(this.$auth.user.wechat),
             province: _.cloneDeep(this.$auth.user.province),
             mbti: _.cloneDeep(this.$auth.user.mbti),
-            drawerVisible: false  // 添加这一行控制抽屉显示
+            drawerVisible: false,  // 添加这一行控制抽屉显示
+            showTranslate: false,
+            translateFailed: false
         }
     },
     methods: {
@@ -218,6 +220,42 @@ export default {
                     this.show_update_contact_panel = false
                 }
             })
+        },
+        safeLoadGoogleTranslate() {
+            if (process.server) return
+
+            window.googleTranslateElementInit = () => {
+                try {
+                    // eslint-disable-next-line no-undef
+                    new google.translate.TranslateElement(
+                        { pageLanguage: 'en' },
+                        'google_translate_element'
+                    )
+                    this.showTranslate = true
+                } catch (e) {
+                    this.translateFailed = true
+                    this.showTranslate = false
+                }
+            }
+
+            const s = document.createElement('script')
+            s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
+            s.async = true
+            s.defer = true
+
+            s.onerror = () => {
+                this.translateFailed = true
+                this.showTranslate = false
+            }
+
+            const timer = setTimeout(() => {
+                this.translateFailed = true
+                this.showTranslate = false
+            }, 8000)
+
+            s.onload = () => clearTimeout(timer)
+
+            document.body.appendChild(s)
         }
     },
     created() {
@@ -227,6 +265,9 @@ export default {
         setInterval(async () => {
             await this.$auth.fetchUser()
         }, 5 * 60 * 1000)
+    },
+    mounted() {
+        this.safeLoadGoogleTranslate()
     }
 }
 </script>
