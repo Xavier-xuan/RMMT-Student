@@ -7,7 +7,9 @@
                     <el-col class="site-name" :span="8">
                         <a href="/">Roommate Matcher</a>
                     </el-col>
-                    <el-col class="site-name" :span="4"></el-col>
+                    <el-col class="site-name" :span="4" style="display: flex; align-items: center; justify-content: center;">
+                        <div id="google_translate_element"></div>
+                    </el-col>
 
                     <!-- 桌面端菜单 -->
                     <el-col class="menu desktop-menu" :lg="10" :md="12" :xs="0" style="text-align: right;">
@@ -286,5 +288,9 @@ a {
     .mobile-menu-btn {
         display: none !important;
     }
+}
+
+#google_translate_element {
+    line-height: 1;
 }
 </style>
