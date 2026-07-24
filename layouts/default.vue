@@ -228,7 +228,7 @@ export default {
                 try {
                     // eslint-disable-next-line no-undef
                     new google.translate.TranslateElement(
-                        { pageLanguage: 'en' },
+                        { pageLanguage: 'zh-CN' },
                         'google_translate_element'
                     )
                     this.showTranslate = true
