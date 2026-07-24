@@ -19,30 +19,7 @@ export default {
         ],
         link: [
             {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
-        ],
-        script: [
-            {
-                hid: 'google-translate-init',
-                innerHTML: `
-                    function googleTranslateElementInit() {
-                        new google.translate.TranslateElement(
-                            {pageLanguage: 'en'},
-                            'google_translate_element'
-                        );
-                    }
-                `,
-                type: 'text/javascript',
-                charset: 'utf-8'
-            },
-            {
-                src: '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit',
-                type: 'text/javascript',
-                charset: 'utf-8'
-            }
-        ],
-        __dangerouslyDisableSanitizersByTagID: {
-            'google-translate-init': ['innerHTML']
-        }
+        ]
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
