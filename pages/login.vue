@@ -7,19 +7,19 @@
             </div>
             <el-form ref="login_form" :model="login_form" :rules="rules" label-position="top" class="login-form">
                 <el-form-item label="学号 / Student ID" prop="id" class="form-item">
-                    <el-input 
-                        v-model.number="login_form.id" 
-                        placeholder="请输入学号"
+                    <el-input
+                        v-model.number="login_form.id"
+                        placeholder="请输入学号 / Enter your student ID"
                         size="large"
                         prefix-icon="el-icon-user"
                     ></el-input>
                 </el-form-item>
 
                 <el-form-item label="密码 / Password" prop="password" class="form-item">
-                    <el-input 
-                        type="password" 
-                        v-model="login_form.password" 
-                        placeholder="请输入密码"
+                    <el-input
+                        type="password"
+                        v-model="login_form.password"
+                        placeholder="请输入密码 / Enter your password"
                         size="large"
                         prefix-icon="el-icon-lock"
                         show-password
@@ -33,11 +33,11 @@
                     class="login-button"
                     :loading="loading"
                 >
-                    {{ loading ? '登录中...' : '登录 / Login' }}
+                    {{ loading ? '登录中... / Signing in...' : '登录 / Login' }}
                 </el-button>
 
                 <div class="cas-login-divider">
-                    <span class="divider-text">或使用统一认证登录</span>
+                    <span class="divider-text">或使用统一认证登录 / Or sign in with CAS</span>
                 </div>
 
                 <el-button 
@@ -48,7 +48,7 @@
                     :loading="casLoading"
                 >
                     <i class="el-icon-s-promotion"></i>
-                    {{ casLoading ? '统一认证中...' : 'CAS统一认证登录' }}
+                    {{ casLoading ? '统一认证中... / Authenticating...' : 'CAS统一认证登录 / CAS Login' }}
                 </el-button>
 
             </el-form>
@@ -68,17 +68,18 @@ export default {
                 password: ""
             },
             loading: false,
+            casLoading: false,
             rules: {
                 id: {
                     type: 'number',
                     required: true,
-                    message: '请输入学号',
+                    message: '请输入学号 / Student ID is required',
                     trigger: 'blur'
                 },
                 password: {
                     type: 'string',
                     pattern: /^[^\s]*$/,
-                    message: "密码不能包含空格，且至少8个字符",
+                    message: "密码至少8位且不能包含空格 / Password must be at least 8 characters, no spaces",
                     required: true,
                     min: 8,
                     trigger: 'blur'
@@ -97,12 +98,12 @@ export default {
                         })
 
                         if (response.data.code === 200) {
-                            this.$message.success("欢迎 " + this.$auth.user.name + "!")
+                            this.$message.success("欢迎 " + this.$auth.user.name + "! / Welcome, " + this.$auth.user.name + "!")
                         }
 
                     } catch (e) {
                         console.error(e)
-                        this.$message.error("登录失败，请检查学号和密码")
+                        this.$message.error("登录失败，请检查学号和密码 / Login failed, please check your student ID and password")
                     } finally {
                         this.loading = false
                     }
@@ -120,7 +121,7 @@ export default {
                 window.location.href = `${this.$axios.defaults.baseURL}/cas/login`
             } catch (e) {
                 console.error(e)
-                this.$message.error("CAS登录跳转失败")
+                this.$message.error("CAS登录跳转失败 / Failed to redirect to CAS")
                 this.casLoading = false
             }
         }, 3000)
